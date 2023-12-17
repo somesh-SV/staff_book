@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { PencilIcon, LinkIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  PencilIcon,
+  MagnifyingGlassIcon,
+  PlusIcon,
+} from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
   Card,
@@ -11,74 +15,90 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
-import LinkProduct from "./LinkProduct/LinkProduct";
-import EditLinkProduct from "./LinkProduct/EditLinkProduct";
+import { Link, useNavigate } from "react-router-dom";
 
-const TABLE_HEAD = [
-  "Name",
-  `Product`, //${"\u00A0".repeat(7)}Price
-  "Phone Number",
-  "gst",
-  "Address",
-  "Action",
-];
+const TABLE_HEAD = ["Name", "Phone Number", "gst", "Address", "Action"];
 
 const TABLE_ROWS = [
-  {
-    name: "John Doe",
-    phoneNumber: "1234567890",
-    gst: "ABCD1234E",
-    address: "1A, Sample Street, City A",
-    products: [
-      { name: "Product 1", price: 10.99 },
-      { name: "Product 2", price: 15.49 },
-      { name: "Product 3", price: 20.99 },
-      { name: "Product 4", price: 8.75 },
-      { name: "Product 5", price: 12.25 },
-    ],
-  },
   {
     name: "Alice Smith",
     phoneNumber: "9876543210",
     gst: "EFGH5678I",
     address: "5B, Test Avenue, City B",
-    products: [
-      { name: "Product 1", price: 10.99 },
-      { name: "Product 2", price: 15.49 },
-      { name: "Product 3", price: 20.99 },
-      { name: "Product 4", price: 8.75 },
-      { name: "Product 5", price: 12.25 },
-      { name: "Product 6", price: 18.49 },
-      { name: "Product 7", price: 22.99 },
-      { name: "Product 8", price: 14.75 },
-      { name: "Product 9", price: 9.25 },
-      { name: "Product 10", price: 16.99 },
-    ],
   },
   {
     name: "John Doe",
     phoneNumber: "1234567890",
     gst: "ABCD1234E",
     address: "1A, Sample Street, City A",
-    products: [
-      { name: "Product 1", price: 10.99 },
-      { name: "Product 2", price: 15.49 },
-      { name: "Product 3", price: 20.99 },
-      { name: "Product 4", price: 8.75 },
-      { name: "Product 5", price: 12.25 },
-    ],
+  },
+  {
+    name: "Emma Johnson",
+    phoneNumber: "2345678901",
+    gst: "IJKL9012M",
+    address: "10C, Example Road, City C",
+  },
+  {
+    name: "Michael Brown",
+    phoneNumber: "3456789012",
+    gst: "MNOP3456Q",
+    address: "3D, Mock Lane, City D",
+  },
+  {
+    name: "Sophia Wilson",
+    phoneNumber: "4567890123",
+    gst: "QRST5678U",
+    address: "7E, Demonstration Street, City E",
+  },
+  {
+    name: "Oliver Davis",
+    phoneNumber: "5678901234",
+    gst: "UVWX9012Y",
+    address: "2F, Trial Avenue, City F",
+  },
+  {
+    name: "Ava Martinez",
+    phoneNumber: "6789012345",
+    gst: "YZAB6789C",
+    address: "9G, Pilot Road, City G",
+  },
+  {
+    name: "William Garcia",
+    phoneNumber: "7890123456",
+    gst: "CDEF1234G",
+    address: "4H, Sample Lane, City H",
+  },
+  {
+    name: "Charlotte Lopez",
+    phoneNumber: "8901234567",
+    gst: "GHIJ7890K",
+    address: "6I, Test Street, City I",
+  },
+  {
+    name: "James Lee",
+    phoneNumber: "9012345678",
+    gst: "LMNO5678P",
+    address: "8J, Example Avenue, City J",
+  },
+  {
+    name: "Mia Hill",
+    phoneNumber: "0123456789",
+    gst: "PQRS9012T",
+    address: "5K, Mock Road, City K",
+  },
+  {
+    name: "Ethan Clark",
+    phoneNumber: "1234567890",
+    gst: "WXYZ1234D",
+    address: "1L, Demonstration Lane, City L",
   },
 ];
 
 const ViewCustomer = () => {
-  const [isEdit, setIsEdit] = useState(true);
+  const navigate = useNavigate();
   return (
     <div>
-      <div className="shadow-md p-2">
-        {isEdit ? <LinkProduct /> : <EditLinkProduct />}
-      </div>
-      <Card className="h-full w-full mt-5">
+      <Card className="h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mt-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
             <div>
@@ -86,20 +106,26 @@ const ViewCustomer = () => {
                 Customer List
               </Typography>
             </div>
-            <div>
+            <div className="flex w-full shrink-0 gap-2 md:w-max">
+              <div className="w-full md:w-72">
+                <Input
+                  label="Search"
+                  icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                />
+              </div>
               <Button
-                onClick={() => setIsEdit(true)}
-                className="inline-flex item-center gap-2 p-2 px-4 bg-blue-800"
+                onClick={() => navigate("/addCustomer")}
+                className="flex items-center gap-3 bg-blue-700"
+                size="sm"
               >
-                <UserPlusIcon className="w-4 h-4" />
-                Add
+                <PlusIcon className="h-4 w-4" /> Add Customer
               </Button>
             </div>
           </div>
         </CardHeader>
         <CardBody className="px-0">
-          <div className="w-full overflow-x-auto h-[450px]">
-            <table className="w-full min-w-max table-auto text-left overflow-x-auto">
+          <div className="w-full overflow-x-auto min-h-fit max-h-[500px] no-scrollbar">
+            <table className="w-full min-w-max table-auto text-left">
               <thead>
                 <tr className="sticky top-0">
                   {TABLE_HEAD.map((head) => (
@@ -120,7 +146,7 @@ const ViewCustomer = () => {
               </thead>
               <tbody>
                 {TABLE_ROWS.map(
-                  ({ name, phoneNumber, gst, address, products }, index) => {
+                  ({ name, phoneNumber, gst, address }, index) => {
                     const isLast = index === TABLE_ROWS.length - 1;
                     const classes = isLast
                       ? "p-3"
@@ -128,32 +154,16 @@ const ViewCustomer = () => {
 
                     return (
                       <tr key={index}>
-                        <td className={`${classes} cursor-pointer `}>
+                        <td
+                          className={`${classes} cursor-pointer`}
+                          onClick={() => navigate("/customerMgmt")}
+                        >
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
                             {name}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            <ul className="h-32 overflow-y-auto space-y-1">
-                              {products.map((product, idx) => (
-                                <li key={idx}>{product.name}</li>
-                                // <li key={idx} style={{ display: "flex" }}>
-                                //   <span style={{ marginRight: "20px" }}>
-                                //     {product.name}
-                                //   </span>
-                                //   <span>${product.price.toFixed(2)}</span>
-                                // </li>
-                              ))}
-                            </ul>
                           </Typography>
                         </td>
                         <td className={classes}>
@@ -194,9 +204,6 @@ const ViewCustomer = () => {
                             <Link>
                               <TrashIcon className="w-5 h-5 text-red-700" />
                             </Link>
-                            <button onClick={() => setIsEdit(false)}>
-                              <LinkIcon className="w-5 h-5 text-teal-700" />
-                            </button>
                           </span>
                         </td>
                       </tr>

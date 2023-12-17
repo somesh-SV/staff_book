@@ -32,16 +32,10 @@ const LinkProduct = () => {
         Link Product
       </Typography>
       <form className="inline-flex flex-wrap items-center gap-4 mb-3.5">
-        <Select
-          options={CustomerOptions}
-          labelField="name"
-          valueField="id"
-          values={Customers}
-          searchBy="name"
-          keepSelectedInList={false}
-          dropdownHeight="175px"
-          style={{ width: 300, borderRadius: 8 }}
-          onChange={(v) => setCustomers(v)}
+        <input
+          type="text"
+          className="border border-gray-400 py-[4.5px] outline-none px-2 rounded-lg w-[250px] placeholder:text-sm"
+          placeholder="Name"
         />
         <Select
           options={ProductOptions}

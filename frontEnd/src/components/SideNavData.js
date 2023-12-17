@@ -27,26 +27,26 @@ export const SideNavData = [
   },
   {
     title: "Stock",
-    path: "/stock",
+    path: "/viewStock",
     icon: <materialIcon.Warehouse />,
-    arrow: <FaIcons.FaChevronDown />,
-    subMenu: [
-      {
-        title: "Add Stock",
-        path: "/addStock",
-        icon: <materialIcon.LibraryAdd />,
-      },
-      {
-        title: "Stock Table",
-        path: "/viewStock",
-        icon: <materialIcon.ListAlt />,
-      },
-    ],
+    // arrow: <FaIcons.FaChevronDown />,
+    // subMenu: [
+    //   {
+    //     title: "Add Stock",
+    //     path: "/addStock",
+    //     icon: <materialIcon.LibraryAdd />,
+    //   },
+    //   {
+    //     title: "Stock Table",
+    //     path: "/viewStock",
+    //     icon: <materialIcon.ListAlt />,
+    //   },
+    // ],
   },
   {
     title: "Customer",
     path: "/customer",
-    icon: <materialIcon.Warehouse />,
+    icon: <materialIcon.Groups />,
     arrow: <FaIcons.FaChevronDown />,
     subMenu: [
       {

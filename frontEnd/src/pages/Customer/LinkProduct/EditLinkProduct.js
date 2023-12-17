@@ -21,10 +21,6 @@ const EditLinkProduct = () => {
   const [Products, setProducts] = useState([]);
   return (
     <div>
-      {/* <Button className="p-1.5 px-2.5 shadow-none mb-3 bg-blue-700">
-        back
-        <ArrowUturnLeftIcon className="w-4 h-4" />
-      </Button> */}
       <Typography variant="h5" color="gray-blue" className="mb-3.5">
         Edit Link_Product
       </Typography>

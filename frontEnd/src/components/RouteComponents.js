@@ -7,10 +7,11 @@ import ViewStaff from "../pages/Staff/ViewStaff";
 import AddStock from "../pages/Stock/AddStock";
 import EditStock from "../pages/Stock/EditStock";
 import ViewStock from "../pages/Stock/ViewStock";
-import StockMgmt from "../pages/StockManagement/StockMgmt";
+import StockMgmt from "../pages/Management/StockMgmt";
 import AddCustomer from "../pages/Customer/AddCustomer";
 import ViewCustomer from "../pages/Customer/ViewCustomer";
 import EditCustomer from "../pages/Customer/EditCustomer";
+import CustomerMgmt from "../pages/Management/CustomerMgmt";
 
 const RouteComponents = () => {
   return (
@@ -27,6 +28,7 @@ const RouteComponents = () => {
         <Route path="/addCustomer" element={<AddCustomer />} />
         <Route path="/editCustomer" element={<EditCustomer />} />
         <Route path="/viewCustomer" element={<ViewCustomer />} />
+        <Route path="/customerMgmt" element={<CustomerMgmt />} />
       </Routes>
     </div>
   );
