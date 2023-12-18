@@ -54,15 +54,17 @@ function SideBar({ open }) {
                   {selectedSubMenu === index && (
                     <ul>
                       {item.subMenu.map((subItem, subIndex) => (
-                        <li
-                          className={`inline-flex items-center text-md rounded-lg space-x-2 p-2 my-1 w-full ${
-                            pathname === subItem.path ? activeItem : hover
-                          }`}
-                          key={subIndex}
-                        >
-                          {subItem.icon}
-                          <Link to={subItem.path}>{subItem.title}</Link>
-                        </li>
+                        <Link to={subItem.path}>
+                          <li
+                            className={`inline-flex items-center text-md rounded-lg space-x-2 p-2 my-1 w-full ${
+                              pathname === subItem.path ? activeItem : hover
+                            }`}
+                            key={subIndex}
+                          >
+                            {subItem.icon}
+                            <span>{subItem.title}</span>
+                          </li>
+                        </Link>
                       ))}
                     </ul>
                   )}

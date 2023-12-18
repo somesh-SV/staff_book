@@ -27,21 +27,21 @@ export const SideNavData = [
   },
   {
     title: "Stock",
-    path: "/viewStock",
+    path: "/stock",
     icon: <materialIcon.Warehouse />,
-    // arrow: <FaIcons.FaChevronDown />,
-    // subMenu: [
-    //   {
-    //     title: "Add Stock",
-    //     path: "/addStock",
-    //     icon: <materialIcon.LibraryAdd />,
-    //   },
-    //   {
-    //     title: "Stock Table",
-    //     path: "/viewStock",
-    //     icon: <materialIcon.ListAlt />,
-    //   },
-    // ],
+    arrow: <FaIcons.FaChevronDown />,
+    subMenu: [
+      {
+        title: "Add Stock",
+        path: "/addStock",
+        icon: <materialIcon.LibraryAdd />,
+      },
+      {
+        title: "Stock Table",
+        path: "/viewStock",
+        icon: <materialIcon.ListAlt />,
+      },
+    ],
   },
   {
     title: "Customer",

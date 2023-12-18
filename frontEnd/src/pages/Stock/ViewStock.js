@@ -1,102 +1,100 @@
 import React from "react";
-import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   Typography,
   Button,
-  CardBody,
-  CardFooter,
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
-
-const TABLE_HEAD = ["Produc Name", "stock", "Action"];
+import { Link } from "react-router-dom";
+import Images from "../../img/imges";
+const TABLE_HEAD = [
+  "Images",
+  "Produc Name",
+  "Product ID",
+  "Product Model No",
+  "stock",
+  "Action",
+];
 
 const TABLE_ROWS = [
   {
-    ProductName: "Assorted Spring Flowers Basket",
-    stock: 1,
+    img: Images.product1,
+    ProductName: "Product A",
+    ProductId: "PA001",
+    ModelNo: "MOD001",
+    stock: 50,
   },
   {
-    ProductName: "Sunflower Bouquet",
-    stock: 2,
+    img: Images.product2,
+    ProductName: "Product B",
+    ProductId: "PB002",
+    ModelNo: "MOD002",
+    stock: 30,
   },
   {
-    ProductName: "White Lily Arrangement",
-    stock: 3,
+    img: Images.product3,
+    ProductName: "Product C",
+    ProductId: "PC003",
+    ModelNo: "MOD003",
+    stock: 20,
   },
   {
-    ProductName: "Tulip Mix in Vase",
-    stock: 2,
+    img: Images.product4,
+    ProductName: "Product D",
+    ProductId: "PD004",
+    ModelNo: "MOD004",
+    stock: 15,
   },
   {
-    ProductName: "Assorted Spring Flowers Basket",
-    stock: 1,
+    img: Images.product5,
+    ProductName: "Product E",
+    ProductId: "PE005",
+    ModelNo: "MOD005",
+    stock: 40,
   },
   {
-    ProductName: "Sunflower Bouquet",
-    stock: 2,
+    img: Images.product6,
+    ProductName: "Product F",
+    ProductId: "PF006",
+    ModelNo: "MOD006",
+    stock: 25,
   },
   {
-    ProductName: "White Lily Arrangement",
-    stock: 3,
+    img: Images.product7,
+    ProductName: "Product G",
+    ProductId: "PG007",
+    ModelNo: "MOD007",
+    stock: 10,
   },
   {
-    ProductName: "Tulip Mix in Vase",
-    stock: 2,
+    img: Images.product8,
+    ProductName: "Product H",
+    ProductId: "PH008",
+    ModelNo: "MOD008",
+    stock: 60,
   },
   {
-    ProductName: "Assorted Spring Flowers Basket",
-    stock: 1,
+    img: Images.product9,
+    ProductName: "Product I",
+    ProductId: "PI009",
+    ModelNo: "MOD009",
+    stock: 35,
   },
   {
-    ProductName: "Sunflower Bouquet",
-    stock: 2,
-  },
-  {
-    ProductName: "White Lily Arrangement",
-    stock: 3,
-  },
-  {
-    ProductName: "Tulip Mix in Vase",
-    stock: 2,
+    img: Images.product10,
+    ProductName: "Product J",
+    ProductId: "PJ010",
+    ModelNo: "MOD010",
+    stock: 45,
   },
 ];
 
 const ViewStock = () => {
-  const navigate = useNavigate();
   return (
     <div>
-      <div className="p-4 pb-0 max-w-full flex flex-col border shadow-md rounded-md">
-        <div className="mb-3">
-          <Typography variant="h5" color="blue-gray">
-            Add Stock
-          </Typography>
-        </div>
-        <div className="flex w-full md:w-auto justify-between items-center space-x-4 mb-4">
-          <div className="inline-flex justify-between items-center flex-wrap space-x-4">
-            <div>
-              <Input label="Product Name" />
-            </div>
-            <div>
-              <input className="w-[250px]" type="file" />
-            </div>
-            <div>
-              <Input type="number" label="Wages" />
-            </div>
-          </div>
-          <div className="ml-auto">
-            <Button
-              className="flex gap-x-2 items-center justify-center bg-blue-700 text-white"
-              size="sm"
-            >
-              <PlusIcon className="w-4 h-4" /> Add Stock
-            </Button>
-          </div>
-        </div>
-      </div>
       <Card className="h-full w-full mt-4">
         <div className="w-full overflow-x-auto  pt-4">
           <div className="m-3 mb-5 flex flex-wrap justify-between">
@@ -112,7 +110,7 @@ const ViewStock = () => {
               />
             </div>
           </div>
-          <div className="overflow-x-auto h-[400px]">
+          <div className="overflow-x-auto h-[500px]">
             <table className="w-full min-w-max table-auto text-left ">
               <thead>
                 <tr className="sticky top-0">
@@ -133,49 +131,77 @@ const ViewStock = () => {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map(({ ProductName, stock }, index) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
-                  const classes = isLast
-                    ? "p-3 px-4"
-                    : "p-3 px-4 border-b border-blue-gray-50";
+                {TABLE_ROWS.map(
+                  ({ img, ProductName, ProductId, ModelNo, stock }, index) => {
+                    const isLast = index === TABLE_ROWS.length - 1;
+                    const classes = isLast
+                      ? "p-3 px-4"
+                      : "p-3 px-4 border-b border-blue-gray-50";
 
-                  return (
-                    <tr key={index}>
-                      <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {ProductName}
-                        </Typography>
-                      </td>
-
-                      <td className={classes}>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {stock}
-                        </Typography>
-                      </td>
-                      <td className={classes}>
-                        <span className="inline-flex items-center space-x-3">
-                          <Link
-                          // to={"/editStock"}
-                          // onClick={() => console.log("from edit")}
+                    return (
+                      <tr key={index}>
+                        <td className={classes}>
+                          <div className="w-24 min-h-32 max-h-fit">
+                            <img
+                              className="rounded-lg object-cover object-center"
+                              src={img}
+                              alt={"no data"}
+                            />
+                          </div>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
                           >
-                            <PencilIcon className="w-5 h-5 text-blue-700" />
-                          </Link>
-                          <Link>
-                            <TrashIcon className="w-5 h-5 text-red-700" />
-                          </Link>
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
+                            {ProductName}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {ProductId}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {ModelNo}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {stock}
+                          </Typography>
+                        </td>
+                        <td className={classes}>
+                          <span className="inline-flex items-center space-x-3">
+                            <Link
+                              to={"/editStock"}
+                              // onClick={() => console.log("from edit")}
+                            >
+                              <PencilIcon className="w-5 h-5 text-blue-700" />
+                            </Link>
+                            <Link>
+                              <TrashIcon className="w-5 h-5 text-red-700" />
+                            </Link>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  }
+                )}
               </tbody>
             </table>
           </div>

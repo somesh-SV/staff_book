@@ -7,18 +7,15 @@ import {
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
   Card,
-  CardHeader,
   Typography,
   Button,
-  CardBody,
   CardFooter,
   IconButton,
   Input,
-  Avatar,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import Select from "react-dropdown-select";
+import Images from "../../img/imges";
 const ProductOptions = [
   { id: 1, name: "Product 1" },
   { id: 2, name: "Product 2" },
@@ -30,52 +27,51 @@ const TABLE_HEAD = ["Image", "Product", "Price", "Action"];
 
 const TABLE_ROWS = [
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
+    img: Images.product1,
     name: "Ava Martinez",
     price: 30,
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
+    img: Images.product2,
     name: "William Garcia",
     price: 25,
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
+    img: Images.product3,
     name: "Charlotte Lopez",
     price: 40,
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
+    img: Images.product4,
     name: "James Lee",
     price: 20,
   },
   {
-    img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
+    img: Images.product5,
     name: "Mia Hill",
     price: 50,
   },
 ];
 
 const CustomerMgmt = () => {
-  const navigate = useNavigate();
   const [Products, setProducts] = useState([]);
   return (
     <div>
       <div>
-        <div className="flex flex-wrap justify-between">
-          <Typography variant="h6" color="blue-gray">
-            Ph No : 9876543210
-          </Typography>
+        <div className="flex flex-col flex-wrap items-center">
           <Typography variant="h6" color="blue-gray">
             Alice Smith
           </Typography>
-          <div>
-            <Typography variant="h6" color="blue-gray">
-              Address : <address>5B, Test Avenue, City B</address>
-            </Typography>
-          </div>
+          <Typography variant="h6" color="blue-gray">
+            Ph No : 9876543210
+          </Typography>
+
+          <Typography className="flex gap-2" variant="h6" color="blue-gray">
+            Address : <address>5B, Test Avenue, City B</address>
+          </Typography>
+          <div></div>
         </div>
-        <div className="mt-5 max-w-full flex flex-col">
+        <div className="my-5 max-w-full flex flex-col border border-t-0 shadow-md rounded-lg p-2">
           <div className="mb-3">
             <Typography variant="h6" color="blue-gray">
               Link Product
@@ -154,7 +150,7 @@ const CustomerMgmt = () => {
                 return (
                   <tr key={index}>
                     <td className={classes}>
-                      <div className="w-20 h-20">
+                      <div className="w-24 min-h-32 max-h-fit">
                         <img
                           className="rounded-lg object-cover object-center"
                           src={img}
