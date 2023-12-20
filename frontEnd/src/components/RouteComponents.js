@@ -7,11 +7,11 @@ import ViewStaff from "../pages/Staff/ViewStaff";
 import AddStock from "../pages/Stock/AddStock";
 import EditStock from "../pages/Stock/EditStock";
 import ViewStock from "../pages/Stock/ViewStock";
-import StockMgmt from "../pages/Management/StockMgmt";
+import StockMgmt from "../Management/StockMgmt";
 import AddCustomer from "../pages/Customer/AddCustomer";
 import ViewCustomer from "../pages/Customer/ViewCustomer";
 import EditCustomer from "../pages/Customer/EditCustomer";
-import CustomerMgmt from "../pages/Management/CustomerMgmt";
+import CustomerMgmt from "../Management/CustomerMgmt";
 
 const RouteComponents = () => {
   return (

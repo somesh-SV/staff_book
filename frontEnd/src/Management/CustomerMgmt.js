@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import Select from "react-dropdown-select";
-import Images from "../../img/imges";
+import Images from "../img/imges";
 const ProductOptions = [
   { id: 1, name: "Product 1" },
   { id: 2, name: "Product 2" },
@@ -110,7 +110,7 @@ const CustomerMgmt = () => {
         <div className="m-3 mb-5 flex flex-col justify-between md:flex-row md:items-center">
           <div>
             <Typography variant="h6" color="blue-gray">
-              Customer List
+              Product List
             </Typography>
           </div>
           <div className="w-full md:w-72">

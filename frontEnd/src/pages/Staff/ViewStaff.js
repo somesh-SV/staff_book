@@ -168,7 +168,7 @@ const ViewStaff = () => {
                       <td className={classes}>
                         <span className="inline-flex items-center space-x-3">
                           <Link
-                            to={"/editStock"}
+                            to={"/editStaff"}
                             onClick={() => console.log("from edit")}
                           >
                             <PencilIcon className="w-5 h-5 text-blue-700" />

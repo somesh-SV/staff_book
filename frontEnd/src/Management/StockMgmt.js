@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
@@ -12,7 +12,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-
+import Select from "react-dropdown-select";
 const TABLE_HEAD = [
   "Date",
   "ProductName",
@@ -121,13 +121,24 @@ const TABLE_ROWS = [
     CashPaid: 130,
   },
 ];
+const ProductOptions = [
+  { id: 1, name: "Product 1" },
+  { id: 2, name: "Product 2" },
+  { id: 3, name: "Product 3" },
+  { id: 4, name: "Product 4" },
+  { id: 5, name: "Product 5" },
+];
+
 const StockMgmt = () => {
   const tableRef = useRef(null);
+  const [Products, setProducts] = useState([]);
+
   useEffect(() => {
     if (tableRef.current) {
       tableRef.current.scrollTop = tableRef.current.scrollHeight;
     }
   }, []);
+
   return (
     <div>
       <Card className="mb-4">
@@ -142,7 +153,16 @@ const StockMgmt = () => {
           </div>
           <div className="flex flex-wrap gap-4 justify-between">
             <div>
-              <Input size="regular" label="Product Name" />
+              <Select
+                options={ProductOptions}
+                labelField="name"
+                valueField="id"
+                values={Products}
+                searchBy="name"
+                dropdownHeight="175px"
+                style={{ width: 300, borderRadius: 8 }}
+                onChange={(v) => setProducts(v)}
+              />
             </div>
             <div>
               <Input label="Wages" size="regular" />
