@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  PencilIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-} from "@heroicons/react/24/solid";
+import { PencilIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
   Card,
@@ -14,15 +10,10 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import Select from "react-dropdown-select";
 import Images from "../img/imges";
-const ProductOptions = [
-  { id: 1, name: "Product 1" },
-  { id: 2, name: "Product 2" },
-  { id: 3, name: "Product 3" },
-  { id: 4, name: "Product 4" },
-  { id: 5, name: "Product 5" },
-];
+import EditLinkProduct from "../pages/Customer/LinkProduct/EditLinkProduct";
+import LinkPrtoduct from "../pages/Customer/LinkProduct/LinkProduct";
+
 const TABLE_HEAD = ["Image", "Product", "Price", "Action"];
 
 const TABLE_ROWS = [
@@ -54,7 +45,8 @@ const TABLE_ROWS = [
 ];
 
 const CustomerMgmt = () => {
-  const [Products, setProducts] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+
   return (
     <div>
       <div>
@@ -69,42 +61,8 @@ const CustomerMgmt = () => {
           <Typography className="flex gap-2" variant="h6" color="blue-gray">
             Address : <address>5B, Test Avenue, City B</address>
           </Typography>
-          <div></div>
         </div>
-        <div className="my-5 max-w-full flex flex-col border border-t-0 shadow-md rounded-lg p-2">
-          <div className="mb-3">
-            <Typography variant="h6" color="blue-gray">
-              Link Product
-            </Typography>
-          </div>
-          <div className="flex w-full md:w-auto items-center space-x-4 mb-4">
-            <div className="inline-flex flex-wrap items-center space-x-4">
-              <Select
-                options={ProductOptions}
-                labelField="name"
-                valueField="id"
-                values={Products}
-                searchBy="name"
-                dropdownHeight="175px"
-                style={{ width: 300, borderRadius: 8 }}
-                onChange={(v) => setProducts(v)}
-              />
-              <input
-                type="number"
-                className="border border-gray-400 py-[4.5px] outline-blue-300 px-2 rounded-lg w-[150px] placeholder:text-sm"
-                placeholder="price"
-              />
-            </div>
-            <div className="">
-              <Button
-                className="flex gap-x-2 items-center justify-center bg-blue-700 text-white"
-                size="sm"
-              >
-                <PlusIcon className="w-4 h-4" /> Add
-              </Button>
-            </div>
-          </div>
-        </div>
+        {isEdit ? <EditLinkProduct setIsEdit={setIsEdit} /> : <LinkPrtoduct />}
       </div>
       <Card className="h-full w-full">
         <div className="m-3 mb-5 flex flex-col justify-between md:flex-row md:items-center">
@@ -178,10 +136,7 @@ const CustomerMgmt = () => {
                     </td>
                     <td className={classes}>
                       <span className="inline-flex items-center space-x-3">
-                        <Link
-                          to={"/editCustomer"}
-                          onClick={() => console.log("from edit")}
-                        >
+                        <Link onClick={() => setIsEdit(true)}>
                           <PencilIcon className="w-5 h-5 text-blue-700" />
                         </Link>
                         <Link>
