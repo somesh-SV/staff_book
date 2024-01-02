@@ -17,7 +17,7 @@ import {
 } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 
-const TABLE_HEAD = ["Name", "Phone Number", "gst", "Address", "Action"];
+const TABLE_HEAD = ["Name", "Phone Number", "GST", "Address", "Action"];
 
 const TABLE_ROWS = [
   {

@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { useForm } from "react-hook-form";
 
 const AddStock = () => {
+  const [formData, setFormData] = useState({
+    productName: "",
+    img: "",
+    productId: "",
+    modelNo: "",
+    wages: "",
+  });
+
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (data) => {
+    setFormData({ ...data, img: data.img[0] });
+    console.log(formData);
+  };
+
   return (
     <div className="flex justify-center mt-14">
       <div className="w-full max-w-md">
@@ -9,22 +24,22 @@ const AddStock = () => {
           <Typography variant="h4" color="blue-gray" className="mb-4">
             Add Stock
           </Typography>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
                 Product Name
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Product Name ..."
                 className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("productName")}
               />
             </div>
             <div className="py-2">
-              <input type="file" />
+              <input type="file" {...register("img")} />
             </div>
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
@@ -37,6 +52,7 @@ const AddStock = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("productId")}
               />
             </div>
             <div className="space-y-2">
@@ -50,6 +66,7 @@ const AddStock = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("modelNo")}
               />
             </div>
             <div className="space-y-2">
@@ -63,9 +80,10 @@ const AddStock = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("wages")}
               />
             </div>
-            <Button className="bg-blue-700" fullWidth>
+            <Button type="submit" className="bg-blue-700" fullWidth>
               Add
             </Button>
           </form>
