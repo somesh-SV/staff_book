@@ -5,9 +5,22 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const AddCustomer = () => {
+  const [formData, setFormData] = useState({
+    customerName: "",
+    customerPhNo: "",
+    gst: "",
+    customerAddress: "",
+  });
+
+  const { register, handleSubmit } = useForm({ defaultValues: formData });
+  const onSubmit = (data) => {
+    setFormData(data);
+    console.log(data);
+  };
   return (
     <div className="flex justify-center mt-8">
       <div className="w-full max-w-md">
@@ -15,7 +28,7 @@ const AddCustomer = () => {
           <Typography variant="h4" color="blue-gray" className="mb-4">
             Add Customer
           </Typography>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
                 Customer Name
@@ -27,6 +40,7 @@ const AddCustomer = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("customerName")}
               />
             </div>
             <div className="space-y-2">
@@ -41,6 +55,7 @@ const AddCustomer = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("customerPhNo")}
               />
             </div>
             <div className="space-y-2">
@@ -55,6 +70,7 @@ const AddCustomer = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("gst")}
               />
             </div>
             <div className="space-y-2">
@@ -67,9 +83,10 @@ const AddCustomer = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("customerAddress")}
               />
             </div>
-            <Button className="bg-blue-700" fullWidth>
+            <Button type="submit" className="bg-blue-700" fullWidth>
               Add
             </Button>
           </form>

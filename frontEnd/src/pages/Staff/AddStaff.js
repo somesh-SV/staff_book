@@ -10,36 +10,44 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastSuccess } from "../../components/Toaster/Tost";
+import { useNavigate } from "react-router-dom";
+import { PostStaff } from "../../services/staffServices";
 
 const schema = yup.object().shape({
   staffName: yup.string().required("Staff Name is required"),
-  phoneNumber: yup
+  staffMobileNo: yup
     .string()
     .matches(/^\d{10}$/, "Phone number must be 10 digits")
     .required(),
-  address: yup.string().required("Address is required"),
+  staffAddress: yup.string().required("Address is required"),
 });
 
 const AddStaff = () => {
-  const [formData, setFormData] = useState({
-    staffName: "",
-    phoneNumber: "",
-    address: "",
-  });
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
-    // resolver: yupResolver(schema),
-    defaultValues: formData,
+    resolver: yupResolver(schema),
+    defaultValues: {
+      staffName: "",
+      staffMobileNo: "",
+      staffAddress: "",
+    },
   });
 
-  const onSubmit = (data) => {
-    setFormData(data);
-    ToastSuccess("Staff Added Successfully");
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      const res = await PostStaff(data);
+      if (res) {
+        navigate("/viewStaff");
+        ToastSuccess(res.message);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
   };
 
   return (
@@ -80,11 +88,11 @@ const AddStaff = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
-                {...register("phoneNumber")}
+                {...register("staffMobileNo")}
               />
-              {errors.phoneNumber && (
+              {errors.staffMobileNo && (
                 <p className="text-sm text-red-500">
-                  {errors.phoneNumber.message}
+                  {errors.staffMobileNo.message}
                 </p>
               )}
             </div>
@@ -98,10 +106,12 @@ const AddStaff = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
-                {...register("address")}
+                {...register("staffAddress")}
               />
-              {errors.address && (
-                <p className="text-sm text-red-500">{errors.address.message}</p>
+              {errors.staffAddress && (
+                <p className="text-sm text-red-500">
+                  {errors.staffAddress.message}
+                </p>
               )}
             </div>
             <Button type="submit" className="bg-blue-700" fullWidth>

@@ -10,7 +10,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import Images from "../img/imges";
+import Images from "../resource/img/imges";
 import EditLinkProduct from "../pages/Customer/LinkProduct/EditLinkProduct";
 import LinkPrtoduct from "../pages/Customer/LinkProduct/LinkProduct";
 

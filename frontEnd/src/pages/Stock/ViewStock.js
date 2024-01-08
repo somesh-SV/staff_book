@@ -9,7 +9,7 @@ import {
   Input,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-import Images from "../../img/imges";
+import Images from "../../resource/img/imges";
 const TABLE_HEAD = [
   "Images",
   "Produc Name",
