@@ -13,6 +13,8 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import Select from "react-dropdown-select";
+import EditButton from "../components/Edit_Delete_Button/EditButton";
+import DeleteButton from "../components/Edit_Delete_Button/DeleteButton";
 const TABLE_HEAD = [
   "Date",
   "ProductName",
@@ -144,12 +146,18 @@ const StockMgmt = () => {
       <Card className="mb-4">
         <CardBody>
           <div className="flex justify-between mb-5">
-            <Typography variant="h6" color="blue-gray">
-              Staff Name : Alexa Liras
-            </Typography>
-            <Typography variant="h6" color="blue-gray">
-              Phone No : 9898765765
-            </Typography>
+            <span className="inline-flex items-center space-x-2">
+              <Typography variant="h6" color="deep-purple">
+                Staff Name :
+              </Typography>
+              <Typography variant="h6"> Alexa Liras</Typography>
+            </span>
+            <span className="inline-flex items-center space-x-2">
+              <Typography variant="h6" color="deep-purple">
+                Phone No :
+              </Typography>
+              <Typography variant="h6"> 9898765765</Typography>
+            </span>
           </div>
           <div className="flex flex-wrap gap-4 justify-between">
             <div>
@@ -160,31 +168,32 @@ const StockMgmt = () => {
                 values={Products}
                 searchBy="name"
                 dropdownHeight="175px"
-                style={{ width: 300, borderRadius: 8 }}
+                style={{
+                  width: 300,
+                  borderRadius: 8,
+                  padding: 8,
+                  forcedColorAdjust: "none",
+                }}
                 onChange={(v) => setProducts(v)}
               />
             </div>
             <div>
-              <Input label="Wages" size="regular" />
+              <Input label="Wages" size="md" color="deep-purple" />
             </div>
             <div>
-              <Input label="Quantity" type="number" size="regular" />
+              <Input label="Quantity" type="number" color="deep-purple" />
             </div>
             <div>
-              <Input
-                disabled
-                //value={0}
-                label="Total"
-                type="number"
-                size="regular"
-              />
+              <Input disabled label="Total" type="number" color="deep-purple" />
             </div>
             <div>
-              <Input label="Cash Paid" size="regular" />
+              <Input label="Cash Paid" color="deep-purple" />
             </div>
             <div className="space-x-3 ml-auto">
-              <Button className="bg-red-600 hover:bg-red-400">Clear</Button>
-              <Button className="bg-teal-600 hover:bg-teal-400">Submit</Button>
+              <Button className="bg-red-50 text-red-600 shadow-sm hover:shadow-md">
+                Clear
+              </Button>
+              <Button className="bg-deep-purple-400">Submit</Button>
             </div>
           </div>
         </CardBody>
@@ -196,14 +205,18 @@ const StockMgmt = () => {
               <div className="w-full md:w-96">
                 <Input
                   label="Search"
+                  color="deep-purple"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
             </div>
             <div className="ml-auto items-center pr-6">
-              <Typography variant="h6" color="blue-gray">
-                Balance : 100
-              </Typography>
+              <span className="inline-flex items-center space-x-2">
+                <Typography variant="h6" color="deep-purple">
+                  Balance :
+                </Typography>
+                <Typography variant="h6"> 100</Typography>
+              </span>
             </div>
           </div>
         </CardHeader>
@@ -218,7 +231,7 @@ const StockMgmt = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-blue-gray-100 bg-blue-600 p-4 text-white font-normal leading-none"
+                      className="border-b border-deep-purple-100 bg-deep-purple-400 p-4 text-white font-normal leading-none"
                     >
                       {head}
                     </th>
@@ -230,7 +243,7 @@ const StockMgmt = () => {
                   const isLast = index === TABLE_ROWS.length - 1;
                   const classes = isLast
                     ? "p-4"
-                    : "p-4 border-b border-blue-gray-50";
+                    : "p-4 border-b border-deep-purple-50";
 
                   return (
                     <tr key={index}>
@@ -290,12 +303,8 @@ const StockMgmt = () => {
                       </td>
                       <td className={classes} colSpan={1}>
                         <span className="inline-flex items-center space-x-3">
-                          <Link onClick={() => console.log("from edit")}>
-                            <PencilIcon className="w-5 h-5 text-blue-700" />
-                          </Link>
-                          <Link>
-                            <TrashIcon className="w-5 h-5 text-red-700" />
-                          </Link>
+                          <EditButton />
+                          <DeleteButton />
                         </span>
                       </td>
                     </tr>
@@ -303,7 +312,7 @@ const StockMgmt = () => {
                 })}
                 <tr>
                   <td colSpan={3}></td>
-                  <td className="p-4 border-t border-blue-gray-100">
+                  <td className="p-4 border-t border-deep-purple-100">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -312,7 +321,7 @@ const StockMgmt = () => {
                       Subtotal:
                     </Typography>
                   </td>
-                  <td className="pl-4 border-t border-blue-gray-100">
+                  <td className="pl-4 border-t border-deep-purple-100">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -321,7 +330,7 @@ const StockMgmt = () => {
                       314.9
                     </Typography>
                   </td>
-                  <td className="pl-4 border-t border-blue-gray-100">
+                  <td className="pl-4 border-t border-deep-purple-100">
                     <Typography
                       variant="small"
                       color="blue-gray"

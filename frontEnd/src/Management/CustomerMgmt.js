@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import Images from "../resource/img/imges";
 import EditLinkProduct from "../pages/Customer/LinkProduct/EditLinkProduct";
 import LinkPrtoduct from "../pages/Customer/LinkProduct/LinkProduct";
+import EditButton from "../components/Edit_Delete_Button/EditButton";
+import DeleteButton from "../components/Edit_Delete_Button/DeleteButton";
 
 const TABLE_HEAD = ["Image", "Product", "Price", "Action"];
 
@@ -49,31 +51,39 @@ const CustomerMgmt = () => {
 
   return (
     <div>
-      <div>
-        <div className="flex flex-col flex-wrap items-center">
-          <Typography variant="h6" color="blue-gray">
+      <div className="bg-white rounded-lg">
+        <div className="flex flex-col flex-wrap items-center pt-3">
+          <Typography variant="h5" color="deep-purple">
             Alice Smith
           </Typography>
-          <Typography variant="h6" color="blue-gray">
-            Ph No : 9876543210
-          </Typography>
-
-          <Typography className="flex gap-2" variant="h6" color="blue-gray">
-            Address : <address>5B, Test Avenue, City B</address>
-          </Typography>
+          <span className="inline-flex items-center space-x-2">
+            <Typography variant="h6" color="deep-purple">
+              Ph No :
+            </Typography>
+            <Typography variant="h6"> 9876543210</Typography>
+          </span>
+          <span className="inline-flex items-center space-x-2">
+            <Typography variant="h6" color="deep-purple">
+              Address :
+            </Typography>
+            <Typography variant="h6">
+              <address>5B, Test Avenue, City B</address>
+            </Typography>
+          </span>
         </div>
         {isEdit ? <EditLinkProduct setIsEdit={setIsEdit} /> : <LinkPrtoduct />}
       </div>
       <Card className="h-full w-full">
         <div className="m-3 mb-5 flex flex-col justify-between md:flex-row md:items-center">
           <div>
-            <Typography variant="h6" color="blue-gray">
+            <Typography variant="h6" color="deep-purple">
               Product List
             </Typography>
           </div>
           <div className="w-full md:w-72">
             <Input
               label="Search"
+              color="deep-purple"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
           </div>
@@ -85,7 +95,7 @@ const CustomerMgmt = () => {
                 {TABLE_HEAD.map((head) => (
                   <th
                     key={head}
-                    className="border-b border-blue-gray-100 bg-blue-600 p-4"
+                    className="border-b border-blue-gray-100 bg-deep-purple-400 p-4"
                   >
                     <Typography
                       variant="small"
@@ -103,7 +113,7 @@ const CustomerMgmt = () => {
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-3"
-                  : "p-3 border-b border-blue-gray-50";
+                  : "p-3 border-b border-deep-purple-50";
 
                 return (
                   <tr key={index}>
@@ -136,12 +146,8 @@ const CustomerMgmt = () => {
                     </td>
                     <td className={classes}>
                       <span className="inline-flex items-center space-x-3">
-                        <Link onClick={() => setIsEdit(true)}>
-                          <PencilIcon className="w-5 h-5 text-blue-700" />
-                        </Link>
-                        <Link>
-                          <TrashIcon className="w-5 h-5 text-red-700" />
-                        </Link>
+                        <EditButton fun={() => setIsEdit(true)} />
+                        <DeleteButton />
                       </span>
                     </td>
                   </tr>

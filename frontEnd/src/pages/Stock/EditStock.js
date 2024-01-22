@@ -1,41 +1,94 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  GetSingleProduct,
+  UpdateProduct,
+} from "../../services/productServices";
+import { ToastSuccess } from "../../components/Toaster/Tost";
+import { useForm } from "react-hook-form";
 const EditStock = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    productName: "",
+    img: "",
+    productId: "",
+    modelNo: "",
+    wages: "",
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: formData,
+  });
+
+  const loadProductData = async () => {
+    try {
+      const res = await GetSingleProduct(id);
+      if (res) {
+        setFormData(res.data[0]); // the structure it gives data:{0:{...data}}
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onSubmit = async (data) => {
+    try {
+      const res = await UpdateProduct(id, data);
+      if (res) {
+        navigate("/viewStock");
+        ToastSuccess(res.message);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+  useEffect(() => {
+    loadProductData();
+  }, []);
+  useEffect(() => {
+    reset(formData);
+  }, [formData]);
   return (
-    <div className="flex justify-center mt-14">
+    <div className="flex justify-center mt-8">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="blue-gray" className="mb-4">
+          <Typography variant="h4" color="deep-purple" className="mb-4">
             Edit Stock
           </Typography>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
                 Product Name
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Product Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("productName")}
               />
             </div>
             <div className="py-2">
-              <input type="file" />
+              <input type="file" {...register("img")} />
             </div>
             <div className="space-y-2">
               <Typography variant="h6" color="blue-gray">
                 Product ID
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Product ID ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("productId")}
               />
             </div>
             <div className="space-y-2">
@@ -43,12 +96,12 @@ const EditStock = () => {
                 Model No
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Model No ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("modelNo")}
               />
             </div>
             <div className="space-y-2">
@@ -56,15 +109,15 @@ const EditStock = () => {
                 Wages
               </Typography>
               <Input
-                type="number"
                 placeholder="Wages"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
+                {...register("wages")}
               />
             </div>
-            <Button className="bg-blue-700" fullWidth>
+            <Button type="submit" className="bg-deep-purple-400" fullWidth>
               Save
             </Button>
           </form>

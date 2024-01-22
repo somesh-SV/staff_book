@@ -22,10 +22,10 @@ const AddCustomer = () => {
     console.log(data);
   };
   return (
-    <div className="flex justify-center mt-8">
+    <div className="flex justify-center mt-6">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="blue-gray" className="mb-4">
+          <Typography variant="h4" color="deep-purple" className="mb-4">
             Add Customer
           </Typography>
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -36,7 +36,7 @@ const AddCustomer = () => {
               <Input
                 size="regular"
                 placeholder="Enter Customer Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -51,7 +51,7 @@ const AddCustomer = () => {
                 type="number"
                 size="lg"
                 placeholder="phone Number"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -66,7 +66,7 @@ const AddCustomer = () => {
                 type="number"
                 size="lg"
                 placeholder="GST Number ... "
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -79,14 +79,14 @@ const AddCustomer = () => {
               </Typography>
               <Textarea
                 placeholder="Address ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
                 {...register("customerAddress")}
               />
             </div>
-            <Button type="submit" className="bg-blue-700" fullWidth>
+            <Button type="submit" className="bg-deep-purple-400" fullWidth>
               Add
             </Button>
           </form>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { PencilIcon, PlusIcon } from "@heroicons/react/24/solid";
-import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   CardHeader,
@@ -11,12 +11,14 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { DeleteStaff, GetStaff } from "../../services/staffServices";
 import CustomDialog from "../../components/Dialog/CustomDialog";
 import { isOpen, isClose } from "../../Redux/Reducer/dialog.reducer";
 import { useDispatch } from "react-redux";
 import { ToastError } from "../../components/Toaster/Tost";
+import EditButton from "../../components/Edit_Delete_Button/EditButton";
+import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
 
 const TABLE_HEAD = ["Name", "Phone Number", "Address", "Balance", "Action"];
 
@@ -24,7 +26,13 @@ const ViewStaff = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [tableRows, setTableRows] = useState([]);
+  const [tableRows, setTableRows] = useState([
+    {
+      staffName: "somesh",
+      staffMobileNo: 9894832441,
+      staffAddress: "abc...",
+    },
+  ]);
   const [deleteId, setDeleteId] = useState("");
 
   const getStaffDetail = async () => {
@@ -63,9 +71,9 @@ const ViewStaff = () => {
     <>
       <Card className="h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
-          <div className="mt-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center pt-1">
             <div>
-              <Typography variant="h5" color="blue-gray">
+              <Typography variant="h5" color="deep-purple">
                 Staff List
               </Typography>
             </div>
@@ -73,12 +81,13 @@ const ViewStaff = () => {
               <div className="w-full md:w-72">
                 <Input
                   label="Search"
+                  color="deep-purple"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
               <Button
                 onClick={() => navigate("/addStaff")}
-                className="flex items-center gap-3 bg-blue-700"
+                className="flex items-center gap-3 bg-deep-purple-400"
                 size="sm"
               >
                 <PlusIcon className="h-4 w-4" /> Add Staff
@@ -94,7 +103,7 @@ const ViewStaff = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-blue-gray-100 bg-blue-600 p-4"
+                      className="border-b border-deep-purple-100 bg-deep-purple-400 p-4"
                     >
                       <Typography
                         variant="small"
@@ -112,7 +121,7 @@ const ViewStaff = () => {
                   const isLast = index === tableRows.length - 1;
                   const classes = isLast
                     ? "p-3"
-                    : "p-3 border-b border-blue-gray-50";
+                    : "p-3 border-b border-deep-purple-50";
 
                   return (
                     <tr key={index}>
@@ -153,17 +162,13 @@ const ViewStaff = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {/* {Balance} */}
+                          {item?.balance}
                         </Typography>
                       </td>
                       <td className={classes}>
                         <span className="inline-flex items-center space-x-3">
-                          <Link to={`/editStaff/${item._id}`}>
-                            <PencilIcon className="w-5 h-5 text-blue-700" />
-                          </Link>
-                          <Link onClick={() => openDialog(item._id)}>
-                            <TrashIcon className="w-5 h-5 text-red-700" />
-                          </Link>
+                          <EditButton path={`/editStaff/${item._id}`} />
+                          <DeleteButton fun={() => openDialog(item._id)} />
                         </span>
                       </td>
                     </tr>

@@ -11,6 +11,10 @@ const StaffSchema = new mongoose.Schema({
   staffAddress: {
     type: String,
   },
+  balance: {
+    type: Number,
+    default: 0,
+  },
 });
 
 // StaffBookSchema.pre("save", function (next) {

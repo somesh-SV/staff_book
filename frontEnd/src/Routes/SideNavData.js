@@ -1,4 +1,3 @@
-import * as FaIcons from "react-icons/fa";
 import * as materialIcon from "@mui/icons-material";
 
 export const SideNavData = [
@@ -9,9 +8,7 @@ export const SideNavData = [
   },
   {
     title: "Staff",
-    path: "/services",
     icon: <materialIcon.PeopleAlt />,
-    arrow: <FaIcons.FaChevronDown />,
     subMenu: [
       {
         title: "Add Staff",
@@ -29,7 +26,6 @@ export const SideNavData = [
     title: "Stock",
     path: "/stock",
     icon: <materialIcon.Warehouse />,
-    arrow: <FaIcons.FaChevronDown />,
     subMenu: [
       {
         title: "Add Stock",
@@ -45,9 +41,7 @@ export const SideNavData = [
   },
   {
     title: "Customer",
-    path: "/customer",
     icon: <materialIcon.Groups />,
-    arrow: <FaIcons.FaChevronDown />,
     subMenu: [
       {
         title: "Add Customer",

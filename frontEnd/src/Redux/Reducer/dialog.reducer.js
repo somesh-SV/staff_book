@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   open: false,
-  confirm: false,
 };
 
 export const dialogReducer = createSlice({
@@ -20,6 +19,6 @@ export const dialogReducer = createSlice({
 
 export const selecteOpenState = (state) => state.dialog.open;
 
-export const { isOpen, isClose, isConfirm } = dialogReducer.actions;
+export const { isOpen, isClose } = dialogReducer.actions;
 
 export default dialogReducer.reducer;

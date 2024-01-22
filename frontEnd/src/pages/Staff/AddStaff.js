@@ -30,7 +30,7 @@ const AddStaff = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    // resolver: yupResolver(schema),
     defaultValues: {
       staffName: "",
       staffMobileNo: "",
@@ -54,7 +54,7 @@ const AddStaff = () => {
     <div className="flex justify-center mt-14">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="blue-gray" className="mb-4">
+          <Typography variant="h4" color="deep-purple" className="mb-4">
             Add Staff
           </Typography>
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -63,9 +63,9 @@ const AddStaff = () => {
                 Name
               </Typography>
               <Input
-                size="regular"
+                size="md"
                 placeholder="Enter Staff Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -84,7 +84,7 @@ const AddStaff = () => {
               <Input
                 size="lg"
                 placeholder="Phone Number"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -102,7 +102,7 @@ const AddStaff = () => {
               </Typography>
               <Textarea
                 placeholder="Address ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -114,7 +114,11 @@ const AddStaff = () => {
                 </p>
               )}
             </div>
-            <Button type="submit" className="bg-blue-700" fullWidth>
+            <Button
+              type="submit"
+              className="bg-deep-purple-400 text-white"
+              fullWidth
+            >
               Add
             </Button>
           </form>

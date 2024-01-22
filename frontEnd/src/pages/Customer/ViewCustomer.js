@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  PencilIcon,
-  MagnifyingGlassIcon,
-  PlusIcon,
-} from "@heroicons/react/24/solid";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/solid";
+
 import {
   Card,
   CardHeader,
@@ -15,7 +11,9 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import EditButton from "../../components/Edit_Delete_Button/EditButton";
+import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
 
 const TABLE_HEAD = ["Name", "Phone Number", "GST", "Address", "Action"];
 
@@ -109,13 +107,14 @@ const ViewCustomer = () => {
             <div className="flex w-full shrink-0 gap-2 md:w-max">
               <div className="w-full md:w-72">
                 <Input
+                  color="deep-purple"
                   label="Search"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
               <Button
                 onClick={() => navigate("/addCustomer")}
-                className="flex items-center gap-3 bg-blue-700"
+                className="flex items-center gap-3 bg-deep-purple-400"
                 size="sm"
               >
                 <PlusIcon className="h-4 w-4" /> Add Customer
@@ -131,7 +130,7 @@ const ViewCustomer = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-blue-gray-100 bg-blue-600 p-4"
+                      className="border-b border-blue-gray-100 bg-deep-purple-400 p-4"
                     >
                       <Typography
                         variant="small"
@@ -150,7 +149,7 @@ const ViewCustomer = () => {
                     const isLast = index === TABLE_ROWS.length - 1;
                     const classes = isLast
                       ? "p-3"
-                      : "p-3 border-b border-blue-gray-50";
+                      : "p-3 border-b border-deep-purple-50";
 
                     return (
                       <tr key={index}>
@@ -195,15 +194,8 @@ const ViewCustomer = () => {
                         </td>
                         <td className={classes}>
                           <span className="inline-flex items-center space-x-3">
-                            <Link
-                              to={"/editCustomer"}
-                              onClick={() => console.log("from edit")}
-                            >
-                              <PencilIcon className="w-5 h-5 text-blue-700" />
-                            </Link>
-                            <Link>
-                              <TrashIcon className="w-5 h-5 text-red-700" />
-                            </Link>
+                            <EditButton path={"/editCustomer"} />
+                            <DeleteButton />
                           </span>
                         </td>
                       </tr>

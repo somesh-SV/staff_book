@@ -1,15 +1,24 @@
-import React from "react";
-import { PencilIcon } from "@heroicons/react/24/solid";
-import { MagnifyingGlassIcon, TrashIcon } from "@heroicons/react/24/outline";
+import React, { useEffect, useState } from "react";
+import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/outline";
 import {
   Card,
   Typography,
   Button,
   IconButton,
   Input,
+  CardBody,
+  CardHeader,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
-import Images from "../../resource/img/imges";
+
+import EditButton from "../../components/Edit_Delete_Button/EditButton";
+import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
+import { DeleteProduct, GetProduct } from "../../services/productServices";
+import CustomDialog from "../../components/Dialog/CustomDialog";
+import { isOpen, isClose } from "../../Redux/Reducer/dialog.reducer";
+import { useDispatch } from "react-redux";
+import { ToastError } from "../../components/Toaster/Tost";
+import { useNavigate } from "react-router-dom";
+
 const TABLE_HEAD = [
   "Images",
   "Produc Name",
@@ -19,105 +28,80 @@ const TABLE_HEAD = [
   "Action",
 ];
 
-const TABLE_ROWS = [
-  {
-    img: Images.product1,
-    ProductName: "Product A",
-    ProductId: "PA001",
-    ModelNo: "MOD001",
-    stock: 50,
-  },
-  {
-    img: Images.product2,
-    ProductName: "Product B",
-    ProductId: "PB002",
-    ModelNo: "MOD002",
-    stock: 30,
-  },
-  {
-    img: Images.product3,
-    ProductName: "Product C",
-    ProductId: "PC003",
-    ModelNo: "MOD003",
-    stock: 20,
-  },
-  {
-    img: Images.product4,
-    ProductName: "Product D",
-    ProductId: "PD004",
-    ModelNo: "MOD004",
-    stock: 15,
-  },
-  {
-    img: Images.product5,
-    ProductName: "Product E",
-    ProductId: "PE005",
-    ModelNo: "MOD005",
-    stock: 40,
-  },
-  {
-    img: Images.product6,
-    ProductName: "Product F",
-    ProductId: "PF006",
-    ModelNo: "MOD006",
-    stock: 25,
-  },
-  {
-    img: Images.product7,
-    ProductName: "Product G",
-    ProductId: "PG007",
-    ModelNo: "MOD007",
-    stock: 10,
-  },
-  {
-    img: Images.product8,
-    ProductName: "Product H",
-    ProductId: "PH008",
-    ModelNo: "MOD008",
-    stock: 60,
-  },
-  {
-    img: Images.product9,
-    ProductName: "Product I",
-    ProductId: "PI009",
-    ModelNo: "MOD009",
-    stock: 35,
-  },
-  {
-    img: Images.product10,
-    ProductName: "Product J",
-    ProductId: "PJ010",
-    ModelNo: "MOD010",
-    stock: 45,
-  },
-];
-
 const ViewStock = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [tableRows, setTableRows] = useState([]);
+  const [deleteId, setDeleteId] = useState("");
+
+  const setProductDetail = async () => {
+    try {
+      const res = await GetProduct();
+      if (res) {
+        setTableRows(res.data);
+      }
+    } catch (err) {
+      console.error("Error : ", err);
+    }
+  };
+
+  const deleteProduct = async (_id) => {
+    try {
+      const res = await DeleteProduct(_id);
+      if (res) {
+        ToastError(res.message);
+        setProductDetail();
+        dispatch(isClose(false));
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+  const openDialog = (_id) => {
+    dispatch(isOpen(true));
+    setDeleteId(_id);
+  };
+
+  useEffect(() => {
+    setProductDetail();
+  }, []);
   return (
     <div>
-      <Card className="h-full w-full mt-4">
-        <div className="w-full overflow-x-auto  pt-4">
-          <div className="m-3 mb-5 flex flex-wrap justify-between">
+      <Card className="h-full w-full">
+        <CardHeader floated={false} shadow={false} className="rounded-none">
+          <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center pt-1">
             <div>
-              <Typography variant="h5" color="blue-gray">
+              <Typography variant="h5" color="deep-purple">
                 Stock List
               </Typography>
             </div>
-            <div className="w-full md:w-72">
-              <Input
-                label="Search"
-                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-              />
+            <div className="flex w-full shrink-0 gap-2 md:w-max">
+              <div className="w-full md:w-72">
+                <Input
+                  label="Search"
+                  color="deep-purple"
+                  icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                />
+              </div>
+              <Button
+                onClick={() => navigate("/addStock")}
+                className="flex items-center gap-3 bg-deep-purple-400"
+                size="sm"
+              >
+                <PlusIcon className="h-4 w-4" /> Add Product
+              </Button>
             </div>
           </div>
-          <div className="overflow-x-auto h-[500px]">
+        </CardHeader>
+        <CardBody className="px-0">
+          <div className="w-full overflow-x-auto min-h-fit max-h-[550px]">
             <table className="w-full min-w-max table-auto text-left ">
               <thead>
                 <tr className="sticky top-0">
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-blue-gray-100 bg-blue-600 p-4"
+                      className="border-b border-deep-purple-100 bg-deep-purple-400 p-4"
                     >
                       <Typography
                         variant="small"
@@ -131,81 +115,72 @@ const ViewStock = () => {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map(
-                  ({ img, ProductName, ProductId, ModelNo, stock }, index) => {
-                    const isLast = index === TABLE_ROWS.length - 1;
-                    const classes = isLast
-                      ? "p-3 px-4"
-                      : "p-3 px-4 border-b border-blue-gray-50";
+                {tableRows.map((item, index) => {
+                  const isLast = index === tableRows.length - 1;
+                  const classes = isLast
+                    ? "p-3 px-4"
+                    : "p-3 px-4 border-b border-deep-purple-50";
 
-                    return (
-                      <tr key={index}>
-                        <td className={classes}>
-                          <div className="w-24 min-h-32 max-h-fit">
-                            <img
-                              className="rounded-lg object-cover object-center"
-                              src={img}
-                              alt={"no data"}
-                            />
-                          </div>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {ProductName}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {ProductId}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {ModelNo}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {stock}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <span className="inline-flex items-center space-x-3">
-                            <Link
-                              to={"/editStock"}
-                              // onClick={() => console.log("from edit")}
-                            >
-                              <PencilIcon className="w-5 h-5 text-blue-700" />
-                            </Link>
-                            <Link>
-                              <TrashIcon className="w-5 h-5 text-red-700" />
-                            </Link>
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                  return (
+                    <tr key={index}>
+                      <td className={classes}>
+                        <div className="w-24 min-h-32 max-h-fit">
+                          <img
+                            className="rounded-lg object-cover object-center"
+                            //src={img}
+                            alt={"no data"}
+                          />
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.productName}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.productId}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.modelNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.stock}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <span className="inline-flex items-center space-x-3">
+                          <EditButton path={`/editStock/${item._id}`} />
+                          <DeleteButton fun={() => openDialog(item._id)} />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-        </div>
+        </CardBody>
         <div className="flex items-center justify-between border-t border-blue-gray-50 p-3 ">
           <Button variant="outlined" size="sm">
             Previous
@@ -238,6 +213,7 @@ const ViewStock = () => {
           </Button>
         </div>
       </Card>
+      <CustomDialog onConfirm={() => deleteProduct(deleteId)} />
     </div>
   );
 };

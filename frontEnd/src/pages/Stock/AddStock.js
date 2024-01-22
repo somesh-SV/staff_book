@@ -1,27 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
-
+import { ToastSuccess } from "../../components/Toaster/Tost";
+import { useNavigate } from "react-router-dom";
+import { PostProduct } from "../../services/productServices";
 const AddStock = () => {
-  const [formData, setFormData] = useState({
-    productName: "",
-    img: "",
-    productId: "",
-    modelNo: "",
-    wages: "",
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      productName: "",
+      img: "",
+      productId: "",
+      modelNo: "",
+      wages: "",
+    },
   });
 
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    setFormData({ ...data, img: data.img[0] });
-    console.log(formData);
+  const onSubmit = async (data) => {
+    // setFormData({ ...data, img: data.img[0] });
+    try {
+      const res = await PostProduct(data);
+      console.log(res);
+      if (res) {
+        navigate("/viewStock");
+        ToastSuccess(res.message);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
   };
 
   return (
-    <div className="flex justify-center mt-14">
+    <div className="flex justify-center mt-8">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="blue-gray" className="mb-4">
+          <Typography variant="h4" color="deep-purple" className="mb-4">
             Add Stock
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -31,7 +45,7 @@ const AddStock = () => {
               </Typography>
               <Input
                 placeholder="Enter Product Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -46,9 +60,8 @@ const AddStock = () => {
                 Product ID
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Product ID ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -60,9 +73,8 @@ const AddStock = () => {
                 Model No
               </Typography>
               <Input
-                type="number"
                 placeholder="Enter Model No ..."
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -74,16 +86,15 @@ const AddStock = () => {
                 Wages
               </Typography>
               <Input
-                type="number"
                 placeholder="Wages"
-                className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
                 {...register("wages")}
               />
             </div>
-            <Button type="submit" className="bg-blue-700" fullWidth>
+            <Button type="submit" className="bg-deep-purple-400" fullWidth>
               Add
             </Button>
           </form>
