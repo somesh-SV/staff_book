@@ -11,10 +11,27 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
-import Select from "react-dropdown-select";
+import { useParams } from "react-router-dom";
+import AsyncSelect from "react-select/async";
 import EditButton from "../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../components/Edit_Delete_Button/DeleteButton";
+import { GetSingleStaff } from "../services/staffServices";
+import { GetProduct } from "../services/productServices";
+import CustomDialog from "../components/Dialog/CustomDialog";
+import { isOpen, isClose } from "../Redux/Reducer/dialog.reducer";
+import {
+  selectBalanceState,
+  setBalance,
+} from "../Redux/Reducer/balance.reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastSuccess, ToastError } from "../components/Toaster/Tost";
+import {
+  DeleteStaffMgmt,
+  GetSingleStaffDetails,
+  PostStaffMgmt,
+  UpdateStaffMgmt,
+} from "../services/staffMgmtServices";
+
 const TABLE_HEAD = [
   "Date",
   "ProductName",
@@ -25,117 +42,200 @@ const TABLE_HEAD = [
   "Action",
 ];
 
-const TABLE_ROWS = [
-  {
-    Date: "2023-12-01",
-    ProductName: "Red Rose Bouquet",
-    Wages: 29.99,
-    Quantity: 3,
-    TotalAmount: 89.97,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-03",
-    ProductName: "White Lily Arrangement",
-    Wages: 49.99,
-    Quantity: 2,
-    TotalAmount: 99.98,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-05",
-    ProductName: "Sunflower Bouquet",
-    Wages: 24.99,
-    Quantity: 5,
-    TotalAmount: 124.95,
-    CashPaid: 130,
-  },
-  {
-    Date: "2023-12-01",
-    ProductName: "Red Rose Bouquet",
-    Wages: 29.99,
-    Quantity: 3,
-    TotalAmount: 89.97,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-03",
-    ProductName: "White Lily Arrangement",
-    Wages: 49.99,
-    Quantity: 2,
-    TotalAmount: 99.98,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-05",
-    ProductName: "Sunflower Bouquet",
-    Wages: 24.99,
-    Quantity: 5,
-    TotalAmount: 124.95,
-    CashPaid: 130,
-  },
-  {
-    Date: "2023-12-01",
-    ProductName: "Red Rose Bouquet",
-    Wages: 29.99,
-    Quantity: 3,
-    TotalAmount: 89.97,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-03",
-    ProductName: "White Lily Arrangement",
-    Wages: 49.99,
-    Quantity: 2,
-    TotalAmount: 99.98,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-05",
-    ProductName: "Sunflower Bouquet",
-    Wages: 24.99,
-    Quantity: 5,
-    TotalAmount: 124.95,
-    CashPaid: 130,
-  },
-  {
-    Date: "2023-12-01",
-    ProductName: "Red Rose Bouquet",
-    Wages: 29.99,
-    Quantity: 3,
-    TotalAmount: 89.97,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-03",
-    ProductName: "White Lily Arrangement",
-    Wages: 49.99,
-    Quantity: 2,
-    TotalAmount: 99.98,
-    CashPaid: 100,
-  },
-  {
-    Date: "2023-12-05",
-    ProductName: "Sunflower Bouquet",
-    Wages: 24.99,
-    Quantity: 5,
-    TotalAmount: 124.95,
-    CashPaid: 130,
-  },
-];
-const ProductOptions = [
-  { id: 1, name: "Product 1" },
-  { id: 2, name: "Product 2" },
-  { id: 3, name: "Product 3" },
-  { id: 4, name: "Product 4" },
-  { id: 5, name: "Product 5" },
-];
-
 const StockMgmt = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const balances = useSelector(selectBalanceState);
   const tableRef = useRef(null);
-  const [Products, setProducts] = useState([]);
+  const [staffDetail, setStaffDetail] = useState({});
+  const [products, setProducts] = useState({});
+  const [wages, setWages] = useState();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cashPaid, setCashPaid] = useState();
+  const [total, setTotal] = useState();
+  const [quantity, setQuantity] = useState();
+  const [tableRows, setTableRows] = useState([]);
+  const [isEdit, setisEdit] = useState(false);
+  const [editId, setEditId] = useState();
+  const [deleteId, setDeleteId] = useState("");
+  const getStaffDetail = async () => {
+    try {
+      const res = await GetSingleStaff(id);
+      if (res) {
+        setStaffDetail(res.data[0]);
+        //console.log("single staff", res.data[0]);
+      }
+    } catch (err) {
+      console.error("Error : ", err);
+    }
+  };
+
+  const loadStaffData = async () => {
+    try {
+      const res = await GetSingleStaffDetails(id);
+      if (res) {
+        setTableRows(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProducts = async (searchValue, callback) => {
+    try {
+      const res = await GetProduct();
+      if (res) {
+        setProducts(res.data);
+        const filteredOptions = res.data
+          .filter((option) =>
+            option.productName
+              ?.toLowerCase()
+              .includes(searchValue?.toLowerCase())
+          )
+          .map((option) => ({
+            label: option.productName,
+            value: option.productId,
+          }));
+
+        callback(filteredOptions);
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+  };
+
+  const hangleSelect = (selectedOption) => {
+    setSelectedProduct(selectedOption);
+
+    if (selectedOption) {
+      console.log(selectedOption.label);
+      let selectedLabel = selectedOption.label;
+      const selectedProductWages = products.filter((data) =>
+        data.productName?.toLowerCase().includes(selectedLabel?.toLowerCase())
+      );
+      setWages(selectedProductWages[0]?.wages);
+    } else {
+      setWages(null);
+    }
+  };
+
+  const onSubmit = async () => {
+    const data = {
+      staffId: id,
+      productName: selectedProduct?.label,
+      wages: wages,
+      quantity: Number(quantity),
+      total: total,
+      cashPaid: Number(cashPaid),
+    };
+    try {
+      const res = await PostStaffMgmt(data);
+      if (res.data) {
+        ToastSuccess(res.message);
+        clearForm();
+        loadStaffData();
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+
+  const onSave = async () => {
+    const data = {
+      staffId: id,
+      productName: selectedProduct?.label,
+      wages: wages,
+      quantity: Number(quantity),
+      total: total,
+      cashPaid: Number(cashPaid),
+    };
+    try {
+      const res = await UpdateStaffMgmt(editId, data);
+      if (res.data) {
+        ToastSuccess(res.message);
+        clearForm();
+        loadStaffData();
+        setisEdit(false);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+
+  const clearForm = () => {
+    setSelectedProduct(null);
+    setWages(null);
+    setQuantity("");
+    setTotal(null);
+    setCashPaid("");
+  };
+
+  const noChange = () => {
+    clearForm();
+    setisEdit(false);
+  };
+
+  const editStockDetails = async (_id) => {
+    try {
+      setisEdit(true);
+      setEditId(_id);
+      const res = await GetSingleStaffDetails(_id);
+      if (res.data) {
+        const item = res.data[0];
+        console.log(item);
+        setSelectedProduct({ label: item.productName, value: item.productId });
+        setWages(item.wages);
+        setQuantity(item.quantity);
+        setCashPaid(item.cashPaid);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteStaffMgmt = async (_id) => {
+    try {
+      const res = await DeleteStaffMgmt(_id);
+      if (res) {
+        ToastError(res.message);
+        loadStaffData();
+        dispatch(isClose(false));
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+
+  const openDialog = (_id) => {
+    dispatch(isOpen(true));
+    setDeleteId(_id);
+  };
 
   useEffect(() => {
+    if (wages !== undefined && quantity !== undefined) {
+      const calculatedTotal = wages * quantity;
+      setTotal(calculatedTotal);
+    }
+  }, [quantity, wages]);
+
+  let subTotal = 0;
+  let totalCashPaid = 0;
+
+  tableRows?.forEach((row) => {
+    let rowTotal = parseInt(row?.total) || 0;
+    subTotal += rowTotal;
+
+    let rowCashPaid = parseInt(row?.cashPaid) || 0;
+    totalCashPaid += rowCashPaid;
+  });
+  useEffect(() => {
+    let balance = subTotal - totalCashPaid;
+    dispatch(setBalance({ staffId: id, balance }));
+  }, [subTotal, totalCashPaid]);
+
+  useEffect(() => {
+    getStaffDetail();
+    loadStaffData();
     if (tableRef.current) {
       tableRef.current.scrollTop = tableRef.current.scrollHeight;
     }
@@ -150,51 +250,80 @@ const StockMgmt = () => {
               <Typography variant="h6" color="deep-purple">
                 Staff Name :
               </Typography>
-              <Typography variant="h6"> Alexa Liras</Typography>
+              <Typography variant="h6">{staffDetail.staffName}</Typography>
             </span>
             <span className="inline-flex items-center space-x-2">
               <Typography variant="h6" color="deep-purple">
                 Phone No :
               </Typography>
-              <Typography variant="h6"> 9898765765</Typography>
+              <Typography variant="h6">{staffDetail.staffMobileNo}</Typography>
             </span>
           </div>
-          <div className="flex flex-wrap gap-4 justify-between">
+          <div className="grid grid-cols-6 gap-4">
             <div>
-              <Select
-                options={ProductOptions}
-                labelField="name"
-                valueField="id"
-                values={Products}
-                searchBy="name"
-                dropdownHeight="175px"
-                style={{
-                  width: 300,
-                  borderRadius: 8,
-                  padding: 8,
-                  forcedColorAdjust: "none",
-                }}
-                onChange={(v) => setProducts(v)}
+              <AsyncSelect
+                loadOptions={getProducts}
+                onChange={hangleSelect}
+                isClearable
+                value={selectedProduct}
               />
             </div>
             <div>
-              <Input label="Wages" size="md" color="deep-purple" />
+              <Input
+                label="Wages"
+                size="md"
+                color="deep-purple"
+                value={wages !== null ? wages : ""}
+              />
             </div>
             <div>
-              <Input label="Quantity" type="number" color="deep-purple" />
+              <Input
+                label="Quantity"
+                color="deep-purple"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
             </div>
             <div>
-              <Input disabled label="Total" type="number" color="deep-purple" />
+              <Input disabled label="Total" color="deep-purple" value={total} />
             </div>
             <div>
-              <Input label="Cash Paid" color="deep-purple" />
+              <Input
+                label="Cash Paid"
+                color="deep-purple"
+                value={cashPaid}
+                onChange={(e) => setCashPaid(e.target.value)}
+              />
             </div>
-            <div className="space-x-3 ml-auto">
-              <Button className="bg-red-50 text-red-600 shadow-sm hover:shadow-md">
+            {isEdit ? (
+              <Button className="bg-deep-purple-400" onClick={onSave}>
+                Save
+              </Button>
+            ) : (
+              <Button className="bg-deep-purple-400" onClick={onSubmit}>
+                Submit
+              </Button>
+            )}
+            {isEdit ? (
+              <>
+                <Button
+                  className="bg-red-50 text-red-600 shadow-sm hover:shadow-md"
+                  onClick={clearForm}
+                >
+                  Clear
+                </Button>
+                <Button className="bg-deep-purple-400" onClick={noChange}>
+                  Return
+                </Button>
+              </>
+            ) : (
+              <Button
+                className="bg-red-50 text-red-600 shadow-sm hover:shadow-md"
+                onClick={clearForm}
+              >
                 Clear
               </Button>
-              <Button className="bg-deep-purple-400">Submit</Button>
-            </div>
+            )}
           </div>
         </CardBody>
       </Card>
@@ -215,14 +344,14 @@ const StockMgmt = () => {
                 <Typography variant="h6" color="deep-purple">
                   Balance :
                 </Typography>
-                <Typography variant="h6"> 100</Typography>
+                <Typography variant="h6"> {balances?.[id] || 0}</Typography>
               </span>
             </div>
           </div>
         </CardHeader>
         <CardBody className="px-0 ">
           <div
-            className="w-full overflow-x-auto h-[450px] no-scrollbar"
+            className="w-full  min-h-fit  overflow-x-auto h-[450px] no-scrollbar"
             ref={tableRef}
           >
             <table className="w-full min-w-max table-auto text-left">
@@ -239,8 +368,8 @@ const StockMgmt = () => {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map((item, index) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
+                {tableRows.map((item, index) => {
+                  const isLast = index === tableRows.length - 1;
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-deep-purple-50";
@@ -253,7 +382,7 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.Date}
+                          {item.date}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -262,7 +391,7 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.ProductName}
+                          {item.productName ?? "-"}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -271,7 +400,7 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.Wages}
+                          {item.wages ?? "-"}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -280,7 +409,7 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.Quantity}
+                          {item.quantity ?? "-"}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -289,7 +418,7 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.TotalAmount}
+                          {item.total?.toLocaleString() ?? "-"}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -298,13 +427,13 @@ const StockMgmt = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item.CashPaid}
+                          {item.cashPaid?.toLocaleString() ?? "-"}
                         </Typography>
                       </td>
                       <td className={classes} colSpan={1}>
                         <span className="inline-flex items-center space-x-3">
-                          <EditButton />
-                          <DeleteButton />
+                          <EditButton fun={() => editStockDetails(item._id)} />
+                          <DeleteButton fun={() => openDialog(item._id)} />
                         </span>
                       </td>
                     </tr>
@@ -318,7 +447,7 @@ const StockMgmt = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      Subtotal:
+                      SubTotal:
                     </Typography>
                   </td>
                   <td className="pl-4 border-t border-deep-purple-100">
@@ -327,7 +456,7 @@ const StockMgmt = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      314.9
+                      {subTotal?.toLocaleString() ?? "-"}
                     </Typography>
                   </td>
                   <td className="pl-4 border-t border-deep-purple-100">
@@ -336,7 +465,7 @@ const StockMgmt = () => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      330
+                      {totalCashPaid?.toLocaleString() ?? "-"}
                     </Typography>
                   </td>
                 </tr>
@@ -376,6 +505,7 @@ const StockMgmt = () => {
           </Button>
         </CardFooter>
       </Card>
+      <CustomDialog onConfirm={() => deleteStaffMgmt(deleteId)} />
     </div>
   );
 };

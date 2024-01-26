@@ -2,6 +2,7 @@ const express = require("express");
 const apiRoutes = express.Router();
 
 const staffContoller = require("../Controller/staffController");
+const staffMgmtContoller = require("../Controller/staffMgmtController");
 const productContoller = require("../Controller/productController");
 
 // Staff Route
@@ -11,6 +12,11 @@ apiRoutes.get("/staff/:id", staffContoller.getStaffById);
 apiRoutes.put("/staff/:id", staffContoller.updateStaff);
 apiRoutes.delete("/staff/:id", staffContoller.deleteStaff);
 
+// Staff Management
+apiRoutes.post("/staffMgmt", staffMgmtContoller.postStaffMgmt);
+apiRoutes.get("/staffMgmt/:id", staffMgmtContoller.getStaffMgmtById);
+apiRoutes.put("/staffMgmt/:id", staffMgmtContoller.updateStaffMgmt);
+apiRoutes.delete("/staffMgmt/:id", staffMgmtContoller.deleteStaffMgmt);
 // Product Route
 apiRoutes.post("/product", productContoller.postProduct);
 apiRoutes.get("/product", productContoller.getProduct);

@@ -5,8 +5,8 @@ module.exports.postStaff = async (requestData, callback) => {
     let data = new staff(requestData);
     let response = await data.save();
     callback(null, response);
-  } catch (error) {
-    callback(error);
+  } catch (err) {
+    callback(err);
   }
 };
 

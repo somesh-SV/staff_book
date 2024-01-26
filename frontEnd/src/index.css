@@ -31,3 +31,6 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 } */
+.react-select-container {
+  width: 100%;
+}

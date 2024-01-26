@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { DeleteStaff, GetStaff } from "../../services/staffServices";
 import CustomDialog from "../../components/Dialog/CustomDialog";
 import { isOpen, isClose } from "../../Redux/Reducer/dialog.reducer";
-import { useDispatch } from "react-redux";
+import { selectBalanceState } from "../../Redux/Reducer/balance.reducer";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastError } from "../../components/Toaster/Tost";
 import EditButton from "../../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
@@ -25,6 +26,7 @@ const TABLE_HEAD = ["Name", "Phone Number", "Address", "Balance", "Action"];
 const ViewStaff = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const balances = useSelector(selectBalanceState);
 
   const [tableRows, setTableRows] = useState([
     {
@@ -127,7 +129,7 @@ const ViewStaff = () => {
                     <tr key={index}>
                       <td
                         className={`${classes} cursor-pointer`}
-                        onClick={() => navigate("/stockMgmt")}
+                        onClick={() => navigate(`/stockMgmt/${item._id}`)}
                       >
                         <Typography
                           variant="small"
@@ -162,7 +164,7 @@ const ViewStaff = () => {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {item?.balance}
+                          {balances?.[item._id] || 0}
                         </Typography>
                       </td>
                       <td className={classes}>

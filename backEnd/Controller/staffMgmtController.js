@@ -1,0 +1,55 @@
+const dao = require("../dao/staffMgmtDoa");
+
+module.exports.postStaffMgmt = (req, res) => {
+  var requestData = req.body;
+  dao.postStaffMgmt(requestData, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+      console.log(err);
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Saved Successfully" });
+    }
+  });
+};
+
+module.exports.getStaffMgmtById = (req, res) => {
+  let id = req.params.id;
+  dao.getStaffMgmtById(id, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.status(200).send({ error: false, data: result, message: null });
+    }
+  });
+};
+
+module.exports.updateStaffMgmt = (req, res) => {
+  let id = req.params.id;
+  let requestData = req.body;
+  dao.updateStaffMgmt(id, requestData, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+      console.log(err);
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Updated Successfully" });
+    }
+  });
+};
+
+module.exports.deleteStaffMgmt = (req, res) => {
+  let id = req.params.id;
+  dao.deleteStaffMgmt(id, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
+      console.log(err);
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Deleted Successfully" });
+    }
+  });
+};

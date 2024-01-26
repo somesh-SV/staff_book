@@ -1,4 +1,5 @@
 const product = require("../Model/product");
+const staffMgmt = require("../Model/staffMgmt");
 
 module.exports.postProduct = async (requestData, callback) => {
   try {
@@ -13,9 +14,28 @@ module.exports.postProduct = async (requestData, callback) => {
 module.exports.getProduct = async (callback) => {
   try {
     const response = await product.find();
+
     if (response) {
-      callback(null, response);
+      for (const productItem of response) {
+        const staffData = await staffMgmt.find({
+          productName: productItem.productName,
+        });
+
+        const totalQuantity = staffData.reduce(
+          (acc, entry) => acc + entry.quantity,
+          0
+        );
+
+        productItem.stock = totalQuantity;
+
+        await product.updateOne(
+          { _id: productItem._id },
+          { $set: { stock: totalQuantity } }
+        );
+      }
     }
+
+    callback(null, response);
   } catch (err) {
     callback(err);
   }
