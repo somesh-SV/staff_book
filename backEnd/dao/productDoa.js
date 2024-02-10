@@ -16,7 +16,11 @@ module.exports.getProduct = async (callback) => {
     const response = await product.find();
 
     if (response) {
-      for (const productItem of response) {
+      const setStock = response.map((item) => {
+        item.stock = 0;
+        return item;
+      });
+      for (const productItem of setStock) {
         const staffData = await staffMgmt.find({
           productName: productItem.productName,
         });

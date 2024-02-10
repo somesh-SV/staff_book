@@ -16,7 +16,9 @@ apiRoutes.delete("/staff/:id", staffContoller.deleteStaff);
 apiRoutes.post("/staffMgmt", staffMgmtContoller.postStaffMgmt);
 apiRoutes.get("/staffMgmt/:id", staffMgmtContoller.getStaffMgmtById);
 apiRoutes.put("/staffMgmt/:id", staffMgmtContoller.updateStaffMgmt);
+apiRoutes.put("/staffBalance/:id", staffMgmtContoller.updateBalance);
 apiRoutes.delete("/staffMgmt/:id", staffMgmtContoller.deleteStaffMgmt);
+
 // Product Route
 apiRoutes.post("/product", productContoller.postProduct);
 apiRoutes.get("/product", productContoller.getProduct);

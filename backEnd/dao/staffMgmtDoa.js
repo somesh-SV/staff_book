@@ -1,3 +1,4 @@
+const staff = require("../Model/staff");
 const staffMgmt = require("../Model/staffMgmt");
 
 module.exports.postStaffMgmt = async (requestData, callback) => {
@@ -27,6 +28,22 @@ module.exports.getStaffMgmtById = async (id, callback) => {
 module.exports.updateStaffMgmt = async (id, requestData, callback) => {
   try {
     const response = await staffMgmt.findByIdAndUpdate(id, requestData);
+    if (response) {
+      callback(null, response);
+    }
+  } catch (err) {
+    callback(err);
+  }
+};
+
+module.exports.updateBalance = async (id, requestData, callback) => {
+  try {
+    const response = await staff.findOneAndUpdate(
+      { _id: id },
+      { $set: requestData },
+      { new: true }
+    );
+    //console.log(response);
     if (response) {
       callback(null, response);
     }

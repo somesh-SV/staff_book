@@ -58,6 +58,7 @@ const StockMgmt = () => {
   const [isEdit, setisEdit] = useState(false);
   const [editId, setEditId] = useState();
   const [deleteId, setDeleteId] = useState("");
+
   const getStaffDetail = async () => {
     try {
       const res = await GetSingleStaff(id);
@@ -218,19 +219,32 @@ const StockMgmt = () => {
     }
   }, [quantity, wages]);
 
-  let subTotal = 0;
-  let totalCashPaid = 0;
+  // let subTotal = 0;
+  // let totalCashPaid = 0;
 
-  tableRows?.forEach((row) => {
-    let rowTotal = parseInt(row?.total) || 0;
-    subTotal += rowTotal;
+  // tableRows?.forEach((row) => {
+  //   let rowTotal = parseInt(row?.total) || 0;
+  //   subTotal += rowTotal;
 
-    let rowCashPaid = parseInt(row?.cashPaid) || 0;
-    totalCashPaid += rowCashPaid;
-  });
+  //   let rowCashPaid = parseInt(row?.cashPaid) || 0;
+  //   totalCashPaid += rowCashPaid;
+  // });
+
+  const subTotal = tableRows?.reduce((preVal, row) => {
+    const rowTotal = parseInt(row?.total) || 0;
+    return preVal + rowTotal;
+  }, 0);
+
+  const totalCashPaid = tableRows?.reduce((preVal, row) => {
+    const rowCashPaid = parseInt(row?.cashPaid) || 0;
+    return preVal + rowCashPaid;
+  }, 0);
+
   useEffect(() => {
     let balance = subTotal - totalCashPaid;
-    dispatch(setBalance({ staffId: id, balance }));
+    if (id && balance) {
+      dispatch(setBalance({ staffId: id, balance }));
+    }
   }, [subTotal, totalCashPaid]);
 
   useEffect(() => {

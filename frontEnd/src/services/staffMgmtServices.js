@@ -5,7 +5,6 @@ export const PostStaffMgmt = async (recData) => {
   try {
     const response = await axios.post(`${URL}/staffMgmt`, recData);
     const res = response.data;
-    console.log(res);
     if (res.error) {
       console.log(res.error);
       return null;
@@ -22,7 +21,7 @@ export const GetSingleStaffDetails = async (_id) => {
   try {
     const response = await axios.get(`${URL}/staffMgmt/${_id}`);
     const res = response.data;
-    console.log(res);
+
     if (res.error) {
       console.log(res.error);
       return null;
@@ -39,7 +38,24 @@ export const UpdateStaffMgmt = async (id, recData) => {
   try {
     const response = await axios.put(`${URL}/staffMgmt/${id}`, recData);
     const res = response.data;
-    console.log(res);
+
+    if (res.error) {
+      console.log(res.error);
+      return null;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const UpdateBalance = async (id, recData) => {
+  console.log("frontApi", recData);
+  try {
+    const response = await axios.put(`${URL}/staffBalance/${id}`, recData);
+    const res = response.data;
     if (res.error) {
       console.log(res.error);
       return null;
