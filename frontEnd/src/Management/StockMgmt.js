@@ -242,7 +242,7 @@ const StockMgmt = () => {
 
   useEffect(() => {
     let balance = subTotal - totalCashPaid;
-    if (id && balance) {
+    if (id && (balance || balance === 0)) {
       dispatch(setBalance({ staffId: id, balance }));
     }
   }, [subTotal, totalCashPaid]);
@@ -358,7 +358,9 @@ const StockMgmt = () => {
                 <Typography variant="h6" color="deep-purple">
                   Balance :
                 </Typography>
-                <Typography variant="h6"> {balances?.[id] || 0}</Typography>
+                <Typography variant="h6">
+                  {tableRows.length === 0 ? 0 : balances?.[id]}
+                </Typography>
               </span>
             </div>
           </div>

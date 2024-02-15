@@ -16,7 +16,13 @@ module.exports.getStaffMgmtById = async (id, callback) => {
     const response = await staffMgmt.find({
       $or: [{ staffId: id }, { _id: id }],
     });
-
+    if (response.length === 0) {
+      await staff.findOneAndUpdate(
+        { _id: id },
+        { $set: { balance: 0 } },
+        { new: true }
+      );
+    }
     if (response) {
       callback(null, response);
     }

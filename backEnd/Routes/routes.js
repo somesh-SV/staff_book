@@ -4,6 +4,7 @@ const apiRoutes = express.Router();
 const staffContoller = require("../Controller/staffController");
 const staffMgmtContoller = require("../Controller/staffMgmtController");
 const productContoller = require("../Controller/productController");
+const customerContoller = require("../Controller/customerController");
 
 // Staff Route
 apiRoutes.post("/staff", staffContoller.postStaff);
@@ -25,5 +26,12 @@ apiRoutes.get("/product", productContoller.getProduct);
 apiRoutes.get("/product/:id", productContoller.getProductById);
 apiRoutes.put("/product/:id", productContoller.updateProduct);
 apiRoutes.delete("/product/:id", productContoller.deleteProduct);
+
+// Customer Route
+apiRoutes.post("/customer", customerContoller.postCustomer);
+apiRoutes.get("/customer", customerContoller.getCustomer);
+apiRoutes.delete("/customer/:id", customerContoller.deleteCustomer);
+apiRoutes.get("/customer/:id", customerContoller.getCustomerById);
+apiRoutes.put("/customer/:id", customerContoller.updateCustomer);
 
 module.exports = apiRoutes;

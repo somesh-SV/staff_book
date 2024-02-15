@@ -5,21 +5,32 @@ import {
   Textarea,
   Typography,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { ToastSuccess } from "../../components/Toaster/Tost";
+import { useNavigate } from "react-router-dom";
+import { PostCustomer } from "../../services/customerServices";
 
 const AddCustomer = () => {
-  const [formData, setFormData] = useState({
-    customerName: "",
-    customerPhNo: "",
-    gst: "",
-    customerAddress: "",
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      customerName: "",
+      customerMobileNo: "",
+      gst: "",
+      customerAddress: "",
+    },
   });
-
-  const { register, handleSubmit } = useForm({ defaultValues: formData });
-  const onSubmit = (data) => {
-    setFormData(data);
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await PostCustomer(data);
+      if (res) {
+        navigate("/viewCustomer");
+        ToastSuccess(res.message);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
   };
   return (
     <div className="flex justify-center mt-6">
@@ -55,7 +66,7 @@ const AddCustomer = () => {
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
-                {...register("customerPhNo")}
+                {...register("customerMobileNo")}
               />
             </div>
             <div className="space-y-2">

@@ -61,7 +61,6 @@ const EditStaff = () => {
   }, [formData]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const res = await UpdateStaff(id, data);
       if (res) {

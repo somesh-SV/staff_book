@@ -20,7 +20,7 @@ export const balanceReducer = createSlice({
   extraReducers: (builder) => {
     builder.addCase(setBalance.fulfilled, (state, action) => {
       const { staffId, balance } = action.payload;
-      if (staffId && balance) {
+      if (staffId && (balance || balance === 0)) {
         state.balances = {
           ...state.balances,
           [staffId]: balance,
@@ -36,7 +36,7 @@ export const setBalance = createAsyncThunk(
   "balances/updateBalance",
   async ({ staffId, balance }) => {
     try {
-      if (staffId && balance) {
+      if (staffId && (balance || balance === 0)) {
         const res = await UpdateBalance(staffId, { balance });
         return res.data;
       }

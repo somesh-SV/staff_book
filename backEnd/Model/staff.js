@@ -12,7 +12,7 @@ const StaffSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
-    default: 20,
+    default: 0,
   },
 });
 

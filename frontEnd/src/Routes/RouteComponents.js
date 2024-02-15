@@ -26,7 +26,7 @@ const RouteComponents = () => {
         <Route path="/viewStock" element={<ViewStock />} />
         <Route path="/stockMgmt/:id" element={<StockMgmt />} />
         <Route path="/addCustomer" element={<AddCustomer />} />
-        <Route path="/editCustomer" element={<EditCustomer />} />
+        <Route path="/editCustomer/:id" element={<EditCustomer />} />
         <Route path="/viewCustomer" element={<ViewCustomer />} />
         <Route path="/customerMgmt" element={<CustomerMgmt />} />
       </Routes>

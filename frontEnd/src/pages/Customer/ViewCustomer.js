@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 import {
@@ -14,86 +14,52 @@ import {
 import { useNavigate } from "react-router-dom";
 import EditButton from "../../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
+import { DeleteCustomer, GetCustomer } from "../../services/customerServices";
+import { ToastError } from "../../components/Toaster/Tost";
+import { useDispatch } from "react-redux";
+import { isClose, isOpen } from "../../Redux/Reducer/dialog.reducer";
+import CustomDialog from "../../components/Dialog/CustomDialog";
 
 const TABLE_HEAD = ["Name", "Phone Number", "GST", "Address", "Action"];
 
-const TABLE_ROWS = [
-  {
-    name: "Alice Smith",
-    phoneNumber: "9876543210",
-    gst: "EFGH5678I",
-    address: "5B, Test Avenue, City B",
-  },
-  {
-    name: "John Doe",
-    phoneNumber: "1234567890",
-    gst: "ABCD1234E",
-    address: "1A, Sample Street, City A",
-  },
-  {
-    name: "Emma Johnson",
-    phoneNumber: "2345678901",
-    gst: "IJKL9012M",
-    address: "10C, Example Road, City C",
-  },
-  {
-    name: "Michael Brown",
-    phoneNumber: "3456789012",
-    gst: "MNOP3456Q",
-    address: "3D, Mock Lane, City D",
-  },
-  {
-    name: "Sophia Wilson",
-    phoneNumber: "4567890123",
-    gst: "QRST5678U",
-    address: "7E, Demonstration Street, City E",
-  },
-  {
-    name: "Oliver Davis",
-    phoneNumber: "5678901234",
-    gst: "UVWX9012Y",
-    address: "2F, Trial Avenue, City F",
-  },
-  {
-    name: "Ava Martinez",
-    phoneNumber: "6789012345",
-    gst: "YZAB6789C",
-    address: "9G, Pilot Road, City G",
-  },
-  {
-    name: "William Garcia",
-    phoneNumber: "7890123456",
-    gst: "CDEF1234G",
-    address: "4H, Sample Lane, City H",
-  },
-  {
-    name: "Charlotte Lopez",
-    phoneNumber: "8901234567",
-    gst: "GHIJ7890K",
-    address: "6I, Test Street, City I",
-  },
-  {
-    name: "James Lee",
-    phoneNumber: "9012345678",
-    gst: "LMNO5678P",
-    address: "8J, Example Avenue, City J",
-  },
-  {
-    name: "Mia Hill",
-    phoneNumber: "0123456789",
-    gst: "PQRS9012T",
-    address: "5K, Mock Road, City K",
-  },
-  {
-    name: "Ethan Clark",
-    phoneNumber: "1234567890",
-    gst: "WXYZ1234D",
-    address: "1L, Demonstration Lane, City L",
-  },
-];
-
 const ViewCustomer = () => {
+  const [tableRows, setTableRows] = useState([]);
+  const [deleteId, setDeleteId] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const getCustomerDeatil = async () => {
+    try {
+      const res = await GetCustomer();
+      if (res) {
+        setTableRows(res.data);
+      }
+    } catch (err) {
+      console.error("Error : ", err);
+    }
+  };
+
+  const deleteCustomer = async (_id) => {
+    try {
+      const res = await DeleteCustomer(_id);
+      console.log(res);
+      if (res) {
+        ToastError(res.message);
+        getCustomerDeatil();
+        dispatch(isClose(false));
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+  const openDialog = (_id) => {
+    dispatch(isOpen(true));
+    setDeleteId(_id);
+  };
+
+  useEffect(() => {
+    getCustomerDeatil();
+  }, []);
+
   return (
     <div>
       <Card className="h-full w-full">
@@ -144,64 +110,62 @@ const ViewCustomer = () => {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map(
-                  ({ name, phoneNumber, gst, address }, index) => {
-                    const isLast = index === TABLE_ROWS.length - 1;
-                    const classes = isLast
-                      ? "p-3"
-                      : "p-3 border-b border-deep-purple-50";
+                {tableRows.map((item, index) => {
+                  const isLast = index === tableRows.length - 1;
+                  const classes = isLast
+                    ? "p-3"
+                    : "p-3 border-b border-deep-purple-50";
 
-                    return (
-                      <tr key={index}>
-                        <td
-                          className={`${classes} cursor-pointer`}
-                          onClick={() => navigate("/customerMgmt")}
+                  return (
+                    <tr key={index}>
+                      <td
+                        className={`${classes} cursor-pointer`}
+                        onClick={() => navigate("/customerMgmt")}
+                      >
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
                         >
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {name}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {phoneNumber}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {gst}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {address}
-                          </Typography>
-                        </td>
-                        <td className={classes}>
-                          <span className="inline-flex items-center space-x-3">
-                            <EditButton path={"/editCustomer"} />
-                            <DeleteButton />
-                          </span>
-                        </td>
-                      </tr>
-                    );
-                  }
-                )}
+                          {item?.customerName}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.customerMobileNo}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.gst}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {item?.customerAddress}
+                        </Typography>
+                      </td>
+                      <td className={classes}>
+                        <span className="inline-flex items-center space-x-3">
+                          <EditButton path={`/editCustomer/${item._id}`} />
+                          <DeleteButton fun={() => openDialog(item._id)} />
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -238,6 +202,7 @@ const ViewCustomer = () => {
           </Button>
         </CardFooter>
       </Card>
+      <CustomDialog onConfirm={() => deleteCustomer(deleteId)} />
     </div>
   );
 };

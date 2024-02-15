@@ -38,6 +38,7 @@ const ViewStock = () => {
     try {
       const res = await GetProduct();
       if (res) {
+        console.log(res.data);
         setTableRows(res.data);
       }
     } catch (err) {

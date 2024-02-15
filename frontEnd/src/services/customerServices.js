@@ -1,10 +1,11 @@
 import axios from "axios";
 const URL = process.env.React_App_BaseUrl;
 
-export const PostStaffMgmt = async (recData) => {
+export const PostCustomer = async (recData) => {
   try {
-    const response = await axios.post(`${URL}/staffMgmt`, recData);
+    const response = await axios.post(`${URL}/customer`, recData);
     const res = response.data;
+    console.log(res);
     if (res.error) {
       console.log(res.error);
       return null;
@@ -17,11 +18,11 @@ export const PostStaffMgmt = async (recData) => {
   }
 };
 
-export const GetSingleStaffDetails = async (_id) => {
+export const GetCustomer = async () => {
   try {
-    const response = await axios.get(`${URL}/staffMgmt/${_id}`);
+    const response = await axios.get(`${URL}/customer`);
     const res = response.data;
-
+    console.log(res);
     if (res.error) {
       console.log(res.error);
       return null;
@@ -34,11 +35,11 @@ export const GetSingleStaffDetails = async (_id) => {
   }
 };
 
-export const UpdateStaffMgmt = async (id, recData) => {
+export const GetSingleCustomer = async (_id) => {
   try {
-    const response = await axios.put(`${URL}/staffMgmt/${id}`, recData);
+    const response = await axios.get(`${URL}/customer/${_id}`);
     const res = response.data;
-
+    console.log(res);
     if (res.error) {
       console.log(res.error);
       return null;
@@ -51,10 +52,11 @@ export const UpdateStaffMgmt = async (id, recData) => {
   }
 };
 
-export const UpdateBalance = async (id, recData) => {
+export const UpdateCustomer = async (id, recData) => {
   try {
-    const response = await axios.put(`${URL}/staffBalance/${id}`, recData);
+    const response = await axios.put(`${URL}/customer/${id}`, recData);
     const res = response.data;
+    console.log(res);
     if (res.error) {
       console.log(res.error);
       return null;
@@ -67,9 +69,9 @@ export const UpdateBalance = async (id, recData) => {
   }
 };
 
-export const DeleteStaffMgmt = async (_id) => {
+export const DeleteCustomer = async (_id) => {
   try {
-    const response = await axios.delete(`${URL}/staffMgmt/${_id}`);
+    const response = await axios.delete(`${URL}/customer/${_id}`);
     const res = response.data;
     if (res.error) {
       console.log(res.error);
