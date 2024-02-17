@@ -1,18 +1,16 @@
 const mongoose = require("mongoose");
 
+const linkedProductsSchema = new mongoose.Schema({
+  productId: { type: mongoose.SchemaTypes.ObjectId, ref: "Product" },
+  price: Number,
+});
+
 const CustomerSchema = new mongoose.Schema({
-  customerName: {
-    type: String,
-  },
-  customerMobileNo: {
-    type: Number,
-  },
-  customerAddress: {
-    type: String,
-  },
-  gst: {
-    type: Number,
-  },
+  customerName: String,
+  customerMobileNo: Number,
+  customerAddress: String,
+  gst: Number,
+  linkedProducts: [linkedProductsSchema],
 });
 
 module.exports = mongoose.model("Customer", CustomerSchema);

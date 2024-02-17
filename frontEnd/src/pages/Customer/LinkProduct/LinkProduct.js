@@ -1,19 +1,74 @@
 import React, { useState } from "react";
 import { Button, Input, Typography } from "@material-tailwind/react";
-import Select from "react-dropdown-select";
+import AsyncSelect from "react-select/async";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { GetProduct } from "../../../services/productServices";
+import { ToastSuccess } from "../../../components/Toaster/Tost";
+import { UpdateCustomer } from "../../../services/customerServices";
+import { useParams } from "react-router-dom";
 
-const ProductOptions = [
-  { id: 1, name: "Product 1" },
-  { id: 2, name: "Product 2" },
-  { id: 3, name: "Product 3" },
-  { id: 4, name: "Product 4" },
-  { id: 5, name: "Product 5" },
-];
+const LinkProduct = ({ getCustomerDetail }) => {
+  const { id } = useParams();
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [price, setPrice] = useState("");
+  const [productId, setProductId] = useState("");
+  const [products, setproducts] = useState();
 
-const LinkProduct = () => {
-  const [Customers, setCustomers] = useState([]);
-  const [Products, setProducts] = useState([]);
+  const getProducts = async (searchValue, callback) => {
+    try {
+      const res = await GetProduct();
+      if (res) {
+        setproducts(res.data);
+        const filteredOptions = res.data
+          .filter((option) =>
+            option.productName
+              ?.toLowerCase()
+              .includes(searchValue?.toLowerCase())
+          )
+          .map((option) => ({
+            label: option.productName,
+            value: option.productId,
+          }));
+        callback(filteredOptions);
+      }
+    } catch (err) {
+      console.error("Error fetching products:", err);
+    }
+  };
+
+  const handleSelect = (selectedOption) => {
+    setSelectedProduct(selectedOption);
+    if (selectedOption) {
+      setProductId(selectedOption.value);
+      let selectedLabel = selectedOption.label;
+      const selectedProductWages = products.filter((data) =>
+        data.productName?.toLowerCase().includes(selectedLabel?.toLowerCase())
+      );
+      setProductId(selectedProductWages[0]._id);
+    } else {
+      setProductId("");
+      setPrice("");
+    }
+  };
+
+  const onSubmit = async () => {
+    const data = {
+      linkedProducts: [{ productId, price }],
+    };
+
+    try {
+      const res = await UpdateCustomer(id, data);
+      if (res) {
+        ToastSuccess(res.message);
+        setSelectedProduct("");
+        setPrice("");
+        getCustomerDetail(id);
+      }
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+
   return (
     <div className="my-5 max-w-full flex flex-col rounded-lg p-2">
       <div className="mb-3">
@@ -23,26 +78,29 @@ const LinkProduct = () => {
       </div>
       <div className="flex w-full md:w-auto items-center space-x-4 mb-4">
         <div className="inline-flex flex-wrap items-center space-x-4">
-          <span>
-            <Select
-              options={ProductOptions}
-              labelField="name"
-              valueField="id"
-              values={Products}
-              searchBy="name"
-              dropdownHeight="175px"
-              style={{ width: 300, borderRadius: 8 }}
-              onChange={(v) => setProducts(v)}
+          <span className="w-72">
+            <AsyncSelect
+              loadOptions={getProducts}
+              onChange={handleSelect}
+              isClearable
+              value={selectedProduct}
             />
           </span>
           <span>
-            <Input label="Price" color="deep-purple" />
+            <Input
+              label="Price"
+              size="md"
+              color="deep-purple"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
           </span>
         </div>
         <div className="">
           <Button
             className="flex items-center gap-3 bg-deep-purple-400"
             size="sm"
+            onClick={onSubmit}
           >
             <PlusIcon className="h-4 w-4" /> Add
           </Button>

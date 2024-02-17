@@ -128,7 +128,7 @@ const ViewStock = () => {
                         <div className="w-24 min-h-32 max-h-fit">
                           <img
                             className="rounded-lg object-cover object-center"
-                            //src={img}
+                            src={item.img}
                             alt={"no data"}
                           />
                         </div>

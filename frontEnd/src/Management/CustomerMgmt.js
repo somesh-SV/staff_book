@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PencilIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import {
@@ -9,69 +9,68 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Images from "../resource/img/imges";
 import EditLinkProduct from "../pages/Customer/LinkProduct/EditLinkProduct";
 import LinkPrtoduct from "../pages/Customer/LinkProduct/LinkProduct";
 import EditButton from "../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../components/Edit_Delete_Button/DeleteButton";
+import { GetSingleCustomer } from "../services/customerServices";
 
 const TABLE_HEAD = ["Image", "Product", "Price", "Action"];
 
-const TABLE_ROWS = [
-  {
-    img: Images.product1,
-    name: "Ava Martinez",
-    price: 30,
-  },
-  {
-    img: Images.product2,
-    name: "William Garcia",
-    price: 25,
-  },
-  {
-    img: Images.product3,
-    name: "Charlotte Lopez",
-    price: 40,
-  },
-  {
-    img: Images.product4,
-    name: "James Lee",
-    price: 20,
-  },
-  {
-    img: Images.product5,
-    name: "Mia Hill",
-    price: 50,
-  },
-];
-
 const CustomerMgmt = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const { id } = useParams();
+  const [tableRows, setTableRows] = useState([]);
+  const [customerDetail, setCustomerDetail] = useState({});
+
+  const getCustomerDetail = async () => {
+    try {
+      const res = await GetSingleCustomer(id);
+      if (res) {
+        setCustomerDetail(res.data[0]);
+        console.log();
+        setTableRows(res.data[0].linkedProducts);
+      }
+    } catch (err) {
+      console.error("Error : ", err);
+    }
+  };
+
+  useEffect(() => {
+    getCustomerDetail();
+  }, []);
 
   return (
     <div>
       <div className="bg-white rounded-lg">
         <div className="flex flex-col flex-wrap items-center pt-3">
           <Typography variant="h5" color="deep-purple">
-            Alice Smith
+            {customerDetail.customerName}
           </Typography>
           <span className="inline-flex items-center space-x-2">
             <Typography variant="h6" color="deep-purple">
               Ph No :
             </Typography>
-            <Typography variant="h6"> 9876543210</Typography>
+            <Typography variant="h6">
+              {customerDetail.customerMobileNo}
+            </Typography>
           </span>
           <span className="inline-flex items-center space-x-2">
             <Typography variant="h6" color="deep-purple">
               Address :
             </Typography>
             <Typography variant="h6">
-              <address>5B, Test Avenue, City B</address>
+              <address>{customerDetail.customerAddress}</address>
             </Typography>
           </span>
         </div>
-        {isEdit ? <EditLinkProduct setIsEdit={setIsEdit} /> : <LinkPrtoduct />}
+        {isEdit ? (
+          <EditLinkProduct setIsEdit={setIsEdit} />
+        ) : (
+          <LinkPrtoduct getCustomerDetail={getCustomerDetail} />
+        )}
       </div>
       <Card className="h-full w-full">
         <div className="m-3 mb-5 flex flex-col justify-between md:flex-row md:items-center">
@@ -109,8 +108,8 @@ const CustomerMgmt = () => {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROWS.map(({ img, name, price }, index) => {
-                const isLast = index === TABLE_ROWS.length - 1;
+              {tableRows?.map((item, index) => {
+                const isLast = index === tableRows.length - 1;
                 const classes = isLast
                   ? "p-3"
                   : "p-3 border-b border-deep-purple-50";
@@ -121,8 +120,8 @@ const CustomerMgmt = () => {
                       <div className="w-24 min-h-32 max-h-fit">
                         <img
                           className="rounded-lg object-cover object-center"
-                          src={img}
-                          alt={name}
+                          src={item?.productId?.img}
+                          alt={"No data"}
                         />
                       </div>
                     </td>
@@ -132,7 +131,7 @@ const CustomerMgmt = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {name}
+                        {item?.productId?.productName}
                       </Typography>
                     </td>
                     <td className={classes}>
@@ -141,7 +140,7 @@ const CustomerMgmt = () => {
                         color="blue-gray"
                         className="font-normal"
                       >
-                        {price}
+                        {item?.price}
                       </Typography>
                     </td>
                     <td className={classes}>

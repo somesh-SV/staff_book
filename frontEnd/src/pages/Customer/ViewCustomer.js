@@ -120,7 +120,7 @@ const ViewCustomer = () => {
                     <tr key={index}>
                       <td
                         className={`${classes} cursor-pointer`}
-                        onClick={() => navigate("/customerMgmt")}
+                        onClick={() => navigate(`/customerMgmt/${item._id}`)}
                       >
                         <Typography
                           variant="small"

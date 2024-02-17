@@ -2,28 +2,16 @@ const mongoose = require("mongoose");
 const moment = require("moment");
 
 const StaffMgmtSchema = new mongoose.Schema({
-  staffId: {
-    type: String,
-  },
+  staffId: String,
   date: {
     type: String,
     default: moment().format("DD-MM-YYYY"),
   },
-  productName: {
-    type: String,
-  },
-  wages: {
-    type: Number,
-  },
-  quantity: {
-    type: Number,
-  },
-  total: {
-    type: Number,
-  },
-  cashPaid: {
-    type: Number,
-  },
+  productName: String,
+  wages: Number,
+  quantity: Number,
+  total: Number,
+  cashPaid: Number,
 });
 
 StaffMgmtSchema.pre("save", function (next) {

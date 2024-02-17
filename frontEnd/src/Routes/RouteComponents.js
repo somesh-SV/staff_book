@@ -28,7 +28,7 @@ const RouteComponents = () => {
         <Route path="/addCustomer" element={<AddCustomer />} />
         <Route path="/editCustomer/:id" element={<EditCustomer />} />
         <Route path="/viewCustomer" element={<ViewCustomer />} />
-        <Route path="/customerMgmt" element={<CustomerMgmt />} />
+        <Route path="/customerMgmt/:id" element={<CustomerMgmt />} />
       </Routes>
     </div>
   );
