@@ -3,8 +3,8 @@ import { Button, Input, Typography } from "@material-tailwind/react";
 import AsyncSelect from "react-select/async";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { GetProduct } from "../../../services/productServices";
-import { ToastSuccess } from "../../../components/Toaster/Tost";
-import { UpdateCustomer } from "../../../services/customerServices";
+import { ToastError, ToastSuccess } from "../../../components/Toaster/Tost";
+import { UpdateLinkedProduct } from "../../../services/customerServices";
 import { useParams } from "react-router-dom";
 
 const LinkProduct = ({ getCustomerDetail }) => {
@@ -54,15 +54,22 @@ const LinkProduct = ({ getCustomerDetail }) => {
   const onSubmit = async () => {
     const data = {
       linkedProducts: [{ productId, price }],
+      edit: false,
     };
 
     try {
-      const res = await UpdateCustomer(id, data);
+      const res = await UpdateLinkedProduct(id, data);
       if (res) {
-        ToastSuccess(res.message);
-        setSelectedProduct("");
-        setPrice("");
-        getCustomerDetail(id);
+        if (res.message === "Already Updated") {
+          ToastError(res.message);
+          setSelectedProduct("");
+          setPrice("");
+        } else {
+          ToastSuccess(res.message);
+          setSelectedProduct("");
+          setPrice("");
+          getCustomerDetail(id);
+        }
       }
     } catch (error) {
       console.log("Err : ", error);
@@ -72,7 +79,7 @@ const LinkProduct = ({ getCustomerDetail }) => {
   return (
     <div className="my-5 max-w-full flex flex-col rounded-lg p-2">
       <div className="mb-3">
-        <Typography variant="h6" color="deep-purple">
+        <Typography variant="h6" color="indigo">
           Link Product
         </Typography>
       </div>
@@ -90,7 +97,7 @@ const LinkProduct = ({ getCustomerDetail }) => {
             <Input
               label="Price"
               size="md"
-              color="deep-purple"
+              color="indigo"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
@@ -98,7 +105,7 @@ const LinkProduct = ({ getCustomerDetail }) => {
         </div>
         <div className="">
           <Button
-            className="flex items-center gap-3 bg-deep-purple-400"
+            className="flex items-center gap-3 bg-indigo-400"
             size="sm"
             onClick={onSubmit}
           >

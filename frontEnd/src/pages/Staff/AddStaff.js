@@ -54,7 +54,7 @@ const AddStaff = () => {
     <div className="flex justify-center mt-14">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="deep-purple" className="mb-4">
+          <Typography variant="h4" color="indigo" className="mb-4">
             Add Staff
           </Typography>
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +65,7 @@ const AddStaff = () => {
               <Input
                 size="md"
                 placeholder="Enter Staff Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -84,7 +84,7 @@ const AddStaff = () => {
               <Input
                 size="lg"
                 placeholder="Phone Number"
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -102,7 +102,7 @@ const AddStaff = () => {
               </Typography>
               <Textarea
                 placeholder="Address ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -116,7 +116,7 @@ const AddStaff = () => {
             </div>
             <Button
               type="submit"
-              className="bg-deep-purple-400 text-white"
+              className="bg-indigo-400 text-white"
               fullWidth
             >
               Add

@@ -34,4 +34,14 @@ apiRoutes.delete("/customer/:id", customerContoller.deleteCustomer);
 apiRoutes.get("/customer/:id", customerContoller.getCustomerById);
 apiRoutes.put("/customer/:id", customerContoller.updateCustomer);
 
+// Customer Management
+apiRoutes.post("/customerProudcts/:id", customerContoller.getLinkedProducts);
+apiRoutes.put(
+  "/updateLinkedProduct/:id",
+  customerContoller.updatedLinkedProducts
+);
+apiRoutes.put(
+  "/deleteLinkedProduct/:id",
+  customerContoller.deleteLinkedProduct
+);
 module.exports = apiRoutes;

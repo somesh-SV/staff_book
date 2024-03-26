@@ -27,7 +27,6 @@ module.exports.getCustomerById = async (id, callback) => {
       .find({ _id: id })
       .populate({ path: "linkedProducts.productId", model: "Product" });
     if (response) {
-      console.log(response);
       callback(null, response);
     }
   } catch (err) {
@@ -48,26 +47,57 @@ module.exports.deleteCustomer = async (id, callback) => {
 
 module.exports.updateCustomer = async (id, requestData, callback) => {
   try {
-    const existingCustomer = await customer.findById(id);
+    const response = await customer.findByIdAndUpdate(id, requestData, {
+      new: true,
+    });
+    return callback(null, response);
+  } catch (err) {
+    return callback(err);
+  }
+};
 
-    if (requestData.linkedProducts) {
-      const productId = requestData.linkedProducts[0].productId;
-      const existingProductIndex = existingCustomer.linkedProducts.findIndex(
-        (product) => product.productId.toString() === productId
+module.exports.getLinkedProducts = async (id, requestData, callback) => {
+  try {
+    const linkProductId = requestData.linkProductId;
+    const customerDetail = await customer
+      .findById({ _id: id })
+      .populate({ path: "linkedProducts.productId", model: "Product" });
+    if (customerDetail) {
+      const data = customerDetail.linkedProducts.filter(
+        (product) => product._id.toString() === linkProductId
       );
+      if (data) {
+        return callback(null, data);
+      }
+    }
+  } catch (err) {
+    return callback(err);
+  }
+};
 
+module.exports.updatedLinkedProducts = async (id, requestData, callback) => {
+  try {
+    const existingCustomer = await customer.findById(id);
+    const productId = requestData.linkedProducts[0].productId;
+    const existingProductIndex = existingCustomer.linkedProducts.findIndex(
+      (product) => product.productId.toString() === productId
+    );
+
+    if (existingProductIndex !== -1 && requestData.edit) {
+      existingCustomer.linkedProducts[existingProductIndex] =
+        requestData.linkedProducts[0];
+
+      const response = await customer
+        .findByIdAndUpdate(
+          id,
+          { $set: { linkedProducts: existingCustomer.linkedProducts } },
+          { new: true }
+        )
+        .populate({ path: "linkedProducts.productId", model: "Product" });
+      return callback(null, response);
+    } else {
       if (existingProductIndex !== -1) {
-        existingCustomer.linkedProducts[existingProductIndex] =
-          requestData.linkedProducts[0];
-
-        const response = await customer
-          .findByIdAndUpdate(
-            id,
-            { $set: { linkedProducts: existingCustomer.linkedProducts } },
-            { new: true }
-          )
-          .populate({ path: "linkedProducts.productId", model: "Product" });
-        return callback(null, response);
+        return callback(new Error("Already Updated"));
       } else {
         const updatedLinkedProducts = existingCustomer.linkedProducts.concat(
           requestData.linkedProducts
@@ -81,15 +111,33 @@ module.exports.updateCustomer = async (id, requestData, callback) => {
           .populate({ path: "linkedProducts.productId", model: "Product" });
         return callback(null, response);
       }
-    } else {
-      const response = await customer
-        .findByIdAndUpdate(id, requestData, {
-          new: true,
-        })
-        .populate({ path: "linkedProducts.productId", model: "Product" });
-      return callback(null, response);
     }
   } catch (err) {
     return callback(err);
+  }
+};
+
+module.exports.deleteLinkedProduct = async (id, requestData, callback) => {
+  try {
+    const existingCustomer = await customer.findById(id);
+    const productId = requestData.linkedProducts[0].productId;
+    const existingProductIndex = existingCustomer.linkedProducts.findIndex(
+      (product) => product._id.toString() === productId
+    );
+    if (existingProductIndex !== -1) {
+      existingCustomer.linkedProducts.splice(existingProductIndex, 1);
+
+      const response = await customer
+        .findByIdAndUpdate(
+          id,
+          { linkedProducts: existingCustomer.linkedProducts },
+          { new: true }
+        )
+        .populate({ path: "linkedProducts.productId", model: "Product" });
+
+      return callback(null, response);
+    }
+  } catch (error) {
+    return callback(error, null);
   }
 };

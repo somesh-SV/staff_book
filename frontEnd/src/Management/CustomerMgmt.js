@@ -15,16 +15,25 @@ import EditLinkProduct from "../pages/Customer/LinkProduct/EditLinkProduct";
 import LinkPrtoduct from "../pages/Customer/LinkProduct/LinkProduct";
 import EditButton from "../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../components/Edit_Delete_Button/DeleteButton";
-import { GetSingleCustomer } from "../services/customerServices";
+import {
+  DeleteLinkedProduct,
+  GetSingleCustomer,
+} from "../services/customerServices";
+import { ToastError } from "../components/Toaster/Tost";
+import { useDispatch } from "react-redux";
+import { isOpen, isClose } from "../Redux/Reducer/dialog.reducer";
+import CustomDialog from "../components/Dialog/CustomDialog";
 
 const TABLE_HEAD = ["Image", "Product", "Price", "Action"];
 
 const CustomerMgmt = () => {
-  const [isEdit, setIsEdit] = useState(false);
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const [isEdit, setIsEdit] = useState(false);
   const [tableRows, setTableRows] = useState([]);
   const [customerDetail, setCustomerDetail] = useState({});
-
+  const [linkProductId, setlinkProductId] = useState("");
+  const [deleteId, setDeleteId] = useState("");
   const getCustomerDetail = async () => {
     try {
       const res = await GetSingleCustomer(id);
@@ -38,6 +47,35 @@ const CustomerMgmt = () => {
     }
   };
 
+  const edit = (_id) => {
+    setlinkProductId(_id);
+    //console.log(_id);
+    setIsEdit(true);
+  };
+
+  const deleteCustomerMgmt = async (_id) => {
+    const data = {
+      linkedProducts: [{ productId: _id }],
+      delete: true,
+    };
+    try {
+      const res = await DeleteLinkedProduct(id, data);
+      if (res) {
+        ToastError(res.message);
+        getCustomerDetail();
+        dispatch(isClose(false));
+      }
+      console.log("woking", _id);
+    } catch (error) {
+      console.log("Err : ", error);
+    }
+  };
+
+  const openDialog = (_id) => {
+    dispatch(isOpen(true));
+    setDeleteId(_id);
+  };
+
   useEffect(() => {
     getCustomerDetail();
   }, []);
@@ -46,11 +84,11 @@ const CustomerMgmt = () => {
     <div>
       <div className="bg-white rounded-lg">
         <div className="flex flex-col flex-wrap items-center pt-3">
-          <Typography variant="h5" color="deep-purple">
+          <Typography variant="h5" color="indigo">
             {customerDetail.customerName}
           </Typography>
           <span className="inline-flex items-center space-x-2">
-            <Typography variant="h6" color="deep-purple">
+            <Typography variant="h6" color="indigo">
               Ph No :
             </Typography>
             <Typography variant="h6">
@@ -58,7 +96,7 @@ const CustomerMgmt = () => {
             </Typography>
           </span>
           <span className="inline-flex items-center space-x-2">
-            <Typography variant="h6" color="deep-purple">
+            <Typography variant="h6" color="indigo">
               Address :
             </Typography>
             <Typography variant="h6">
@@ -67,7 +105,11 @@ const CustomerMgmt = () => {
           </span>
         </div>
         {isEdit ? (
-          <EditLinkProduct setIsEdit={setIsEdit} />
+          <EditLinkProduct
+            linkProductId={linkProductId}
+            setIsEdit={setIsEdit}
+            getCustomerDetail={getCustomerDetail}
+          />
         ) : (
           <LinkPrtoduct getCustomerDetail={getCustomerDetail} />
         )}
@@ -75,14 +117,14 @@ const CustomerMgmt = () => {
       <Card className="h-full w-full">
         <div className="m-3 mb-5 flex flex-col justify-between md:flex-row md:items-center">
           <div>
-            <Typography variant="h6" color="deep-purple">
+            <Typography variant="h6" color="indigo">
               Product List
             </Typography>
           </div>
           <div className="w-full md:w-72">
             <Input
               label="Search"
-              color="deep-purple"
+              color="indigo"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
           </div>
@@ -94,7 +136,7 @@ const CustomerMgmt = () => {
                 {TABLE_HEAD.map((head) => (
                   <th
                     key={head}
-                    className="border-b border-blue-gray-100 bg-deep-purple-400 p-4"
+                    className="border-b border-blue-gray-100 bg-indigo-400 p-4"
                   >
                     <Typography
                       variant="small"
@@ -112,7 +154,7 @@ const CustomerMgmt = () => {
                 const isLast = index === tableRows.length - 1;
                 const classes = isLast
                   ? "p-3"
-                  : "p-3 border-b border-deep-purple-50";
+                  : "p-3 border-b border-indigo-50";
 
                 return (
                   <tr key={index}>
@@ -145,8 +187,8 @@ const CustomerMgmt = () => {
                     </td>
                     <td className={classes}>
                       <span className="inline-flex items-center space-x-3">
-                        <EditButton fun={() => setIsEdit(true)} />
-                        <DeleteButton />
+                        <EditButton fun={() => edit(item?._id)} />
+                        <DeleteButton fun={() => openDialog(item._id)} />
                       </span>
                     </td>
                   </tr>
@@ -187,6 +229,7 @@ const CustomerMgmt = () => {
           </Button>
         </CardFooter>
       </Card>
+      <CustomDialog onConfirm={() => deleteCustomerMgmt(deleteId)} />
     </div>
   );
 };

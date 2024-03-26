@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { MagnifyingGlassIcon, PlusIcon } from "@heroicons/react/24/solid";
+import {
+  MagnifyingGlassIcon,
+  PlusIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/solid";
 
 import {
   Card,
@@ -10,8 +14,13 @@ import {
   CardFooter,
   IconButton,
   Input,
+  Tooltip,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EditButton from "../../components/Edit_Delete_Button/EditButton";
 import DeleteButton from "../../components/Edit_Delete_Button/DeleteButton";
 import { DeleteCustomer, GetCustomer } from "../../services/customerServices";
@@ -23,6 +32,9 @@ import CustomDialog from "../../components/Dialog/CustomDialog";
 const TABLE_HEAD = ["Name", "Phone Number", "GST", "Address", "Action"];
 
 const ViewCustomer = () => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(!open);
   const [tableRows, setTableRows] = useState([]);
   const [deleteId, setDeleteId] = useState("");
   const dispatch = useDispatch();
@@ -73,14 +85,14 @@ const ViewCustomer = () => {
             <div className="flex w-full shrink-0 gap-2 md:w-max">
               <div className="w-full md:w-72">
                 <Input
-                  color="deep-purple"
+                  color="indigo"
                   label="Search"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
               <Button
                 onClick={() => navigate("/addCustomer")}
-                className="flex items-center gap-3 bg-deep-purple-400"
+                className="flex items-center gap-3 bg-indigo-400"
                 size="sm"
               >
                 <PlusIcon className="h-4 w-4" /> Add Customer
@@ -96,7 +108,7 @@ const ViewCustomer = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-blue-gray-100 bg-deep-purple-400 p-4"
+                      className="border-b border-blue-gray-100 bg-indigo-400 p-4"
                     >
                       <Typography
                         variant="small"
@@ -114,7 +126,7 @@ const ViewCustomer = () => {
                   const isLast = index === tableRows.length - 1;
                   const classes = isLast
                     ? "p-3"
-                    : "p-3 border-b border-deep-purple-50";
+                    : "p-3 border-b border-indigo-50";
 
                   return (
                     <tr key={index}>
@@ -161,6 +173,18 @@ const ViewCustomer = () => {
                         <span className="inline-flex items-center space-x-3">
                           <EditButton path={`/editCustomer/${item._id}`} />
                           <DeleteButton fun={() => openDialog(item._id)} />
+                          <Tooltip
+                            placement="bottom"
+                            content="Bill"
+                            className="text-[10px] font-semibold py-0.5 px-2 pb-0 bg-teal-50 text-teal-600 rounded-sm"
+                          >
+                            <button
+                              className="bg-teal-50 rounded-tl-xl rounded-br-xl rounded-sm p-1.5 inline-flex"
+                              onClick={handleOpen}
+                            >
+                              <DocumentTextIcon className="w-5 h-5 text-teal-600" />
+                            </button>
+                          </Tooltip>
                         </span>
                       </td>
                     </tr>
@@ -203,6 +227,34 @@ const ViewCustomer = () => {
         </CardFooter>
       </Card>
       <CustomDialog onConfirm={() => deleteCustomer(deleteId)} />
+      <Dialog size="xl" open={open} handler={handleOpen}>
+        <div className="p-4">
+          <Typography variant="h6" color="indigo">
+            CUSTOMER
+          </Typography>
+          <hr className="mb-4 mt-1 bg-gradient-to-r from-indigo-500 p-0.5 rounded-3xl" />
+        </div>
+        <DialogBody className="overflow-y-auto ">
+          <div>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo in
+              iure doloribus expedita dignissimos officiis laborum dicta ipsa,
+              nostrum consequuntur sit voluptatibus! Distinctio ullam repellat,
+              hic voluptates quas eos quis!
+            </p>
+          </div>
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>Close</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   );
 };

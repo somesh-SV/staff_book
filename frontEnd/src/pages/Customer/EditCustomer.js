@@ -62,7 +62,7 @@ const EditCustomer = () => {
     <div className="flex justify-center mt-6">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="deep-purple" className="mb-4">
+          <Typography variant="h4" color="indigo" className="mb-4">
             Edit Customer
           </Typography>
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -72,8 +72,8 @@ const EditCustomer = () => {
               </Typography>
               <Input
                 size="regular"
-                placeholder="Enter Customer Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                placeholder="Customer Name ..."
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -88,7 +88,7 @@ const EditCustomer = () => {
                 type="number"
                 size="lg"
                 placeholder="phone Number"
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -103,7 +103,7 @@ const EditCustomer = () => {
                 type="number"
                 size="lg"
                 placeholder="GST Number ... "
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -116,14 +116,14 @@ const EditCustomer = () => {
               </Typography>
               <Textarea
                 placeholder="Address ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
                 {...register("customerAddress")}
               />
             </div>
-            <Button type="submit" className="bg-deep-purple-400" fullWidth>
+            <Button type="submit" className="bg-indigo-400" fullWidth>
               Save
             </Button>
           </form>

@@ -13,13 +13,13 @@ function NavBar() {
           <div className="max-w-screen-xl flex items-center ml-3">
             <button onClick={() => setOpen(!open)}>
               {open ? (
-                <XMarkIcon className="text-deep-purple-600 w-8 h-8 animate-spin-slow duration-300" />
+                <XMarkIcon className="text-indigo-600 w-8 h-8 animate-spin-slow duration-300" />
               ) : (
-                <Bars3Icon className=" w-8 h-8 duration-300 text-deep-purple-600" />
+                <Bars3Icon className=" w-8 h-8 duration-300 text-indigo-600" />
               )}
             </button>
 
-            <p className="text-deep-purple-600 text-lg ml-3 flex-grow">Menu</p>
+            <p className="text-indigo-600 text-lg ml-3 flex-grow">Menu</p>
           </div>
         </div>
         <div className="overflow-y-auto no-scrollbar bg-gray-100 w-full h-full">

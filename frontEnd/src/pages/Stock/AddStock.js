@@ -35,7 +35,7 @@ const AddStock = () => {
     <div className="flex justify-center mt-8">
       <div className="w-full max-w-md">
         <Card className="p-4">
-          <Typography variant="h4" color="deep-purple" className="mb-4">
+          <Typography variant="h4" color="indigo" className="mb-4">
             Add Stock
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -45,7 +45,7 @@ const AddStock = () => {
               </Typography>
               <Input
                 placeholder="Enter Product Name ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -61,7 +61,7 @@ const AddStock = () => {
               </Typography>
               <Input
                 placeholder="Enter Product ID ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -74,7 +74,7 @@ const AddStock = () => {
               </Typography>
               <Input
                 placeholder="Enter Model No ..."
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
@@ -87,14 +87,14 @@ const AddStock = () => {
               </Typography>
               <Input
                 placeholder="Wages"
-                className=" !border-t-blue-gray-200 focus:!border-deep-purple-500"
+                className=" !border-t-blue-gray-200 focus:!border-indigo-500"
                 labelProps={{
                   className: "before:content-none after:content-none",
                 }}
                 {...register("wages")}
               />
             </div>
-            <Button type="submit" className="bg-deep-purple-400" fullWidth>
+            <Button type="submit" className="bg-indigo-400" fullWidth>
               Add
             </Button>
           </form>

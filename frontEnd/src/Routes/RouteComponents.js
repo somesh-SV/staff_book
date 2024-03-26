@@ -12,6 +12,7 @@ import AddCustomer from "../pages/Customer/AddCustomer";
 import ViewCustomer from "../pages/Customer/ViewCustomer";
 import EditCustomer from "../pages/Customer/EditCustomer";
 import CustomerMgmt from "../Management/CustomerMgmt";
+import Invoice from "../pages/Bill/Invoice";
 
 const RouteComponents = () => {
   return (
@@ -29,6 +30,7 @@ const RouteComponents = () => {
         <Route path="/editCustomer/:id" element={<EditCustomer />} />
         <Route path="/viewCustomer" element={<ViewCustomer />} />
         <Route path="/customerMgmt/:id" element={<CustomerMgmt />} />
+        <Route path="/invoice" element={<Invoice />} />
       </Routes>
     </div>
   );

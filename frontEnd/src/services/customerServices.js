@@ -82,3 +82,60 @@ export const DeleteCustomer = async (_id) => {
     console.error(error);
   }
 };
+
+export const GetLinkedProducts = async (id, recData) => {
+  try {
+    const response = await axios.post(`${URL}/customerProudcts/${id}`, recData);
+    const res = response.data;
+    console.log(res);
+    if (res.error) {
+      console.log(res.error);
+      return null;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const UpdateLinkedProduct = async (id, recData) => {
+  try {
+    const response = await axios.put(
+      `${URL}/updateLinkedProduct/${id}`,
+      recData
+    );
+    const res = response.data;
+    console.log(res);
+    if (res.error) {
+      console.log(res.error);
+      return null;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+export const DeleteLinkedProduct = async (id, recData) => {
+  try {
+    const response = await axios.put(
+      `${URL}/deleteLinkedProduct/${id}`,
+      recData
+    );
+    const res = response.data;
+    console.log(res);
+    if (res.error) {
+      console.log(res.error);
+      return null;
+    } else {
+      return res;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

@@ -261,13 +261,13 @@ const StockMgmt = () => {
         <CardBody>
           <div className="flex justify-between mb-5">
             <span className="inline-flex items-center space-x-2">
-              <Typography variant="h6" color="deep-purple">
+              <Typography variant="h6" color="indigo">
                 Staff Name :
               </Typography>
               <Typography variant="h6">{staffDetail.staffName}</Typography>
             </span>
             <span className="inline-flex items-center space-x-2">
-              <Typography variant="h6" color="deep-purple">
+              <Typography variant="h6" color="indigo">
                 Phone No :
               </Typography>
               <Typography variant="h6">{staffDetail.staffMobileNo}</Typography>
@@ -286,35 +286,35 @@ const StockMgmt = () => {
               <Input
                 label="Wages"
                 size="md"
-                color="deep-purple"
+                color="indigo"
                 value={wages !== null ? wages : ""}
               />
             </div>
             <div>
               <Input
                 label="Quantity"
-                color="deep-purple"
+                color="indigo"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
             </div>
             <div>
-              <Input disabled label="Total" color="deep-purple" value={total} />
+              <Input disabled label="Total" color="indigo" value={total} />
             </div>
             <div>
               <Input
                 label="Cash Paid"
-                color="deep-purple"
+                color="indigo"
                 value={cashPaid}
                 onChange={(e) => setCashPaid(e.target.value)}
               />
             </div>
             {isEdit ? (
-              <Button className="bg-deep-purple-400" onClick={onSave}>
+              <Button className="bg-indigo-400" onClick={onSave}>
                 Save
               </Button>
             ) : (
-              <Button className="bg-deep-purple-400" onClick={onSubmit}>
+              <Button className="bg-indigo-400" onClick={onSubmit}>
                 Submit
               </Button>
             )}
@@ -326,7 +326,7 @@ const StockMgmt = () => {
                 >
                   Clear
                 </Button>
-                <Button className="bg-deep-purple-400" onClick={noChange}>
+                <Button className="bg-indigo-400" onClick={noChange}>
                   Return
                 </Button>
               </>
@@ -348,14 +348,14 @@ const StockMgmt = () => {
               <div className="w-full md:w-96">
                 <Input
                   label="Search"
-                  color="deep-purple"
+                  color="indigo"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
             </div>
             <div className="ml-auto items-center pr-6">
               <span className="inline-flex items-center space-x-2">
-                <Typography variant="h6" color="deep-purple">
+                <Typography variant="h6" color="indigo">
                   Balance :
                 </Typography>
                 <Typography variant="h6">
@@ -376,7 +376,7 @@ const StockMgmt = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-deep-purple-100 bg-deep-purple-400 p-4 text-white font-normal leading-none"
+                      className="border-b border-indigo-100 bg-indigo-400 p-4 text-white font-normal leading-none"
                     >
                       {head}
                     </th>
@@ -388,7 +388,7 @@ const StockMgmt = () => {
                   const isLast = index === tableRows.length - 1;
                   const classes = isLast
                     ? "p-4"
-                    : "p-4 border-b border-deep-purple-50";
+                    : "p-4 border-b border-indigo-50";
 
                   return (
                     <tr key={index}>
@@ -457,7 +457,7 @@ const StockMgmt = () => {
                 })}
                 <tr>
                   <td colSpan={3}></td>
-                  <td className="p-4 border-t border-deep-purple-100">
+                  <td className="p-4 border-t border-indigo-100">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -466,7 +466,7 @@ const StockMgmt = () => {
                       SubTotal:
                     </Typography>
                   </td>
-                  <td className="pl-4 border-t border-deep-purple-100">
+                  <td className="pl-4 border-t border-indigo-100">
                     <Typography
                       variant="small"
                       color="blue-gray"
@@ -475,7 +475,7 @@ const StockMgmt = () => {
                       {subTotal?.toLocaleString() ?? "-"}
                     </Typography>
                   </td>
-                  <td className="pl-4 border-t border-deep-purple-100">
+                  <td className="pl-4 border-t border-indigo-100">
                     <Typography
                       variant="small"
                       color="blue-gray"

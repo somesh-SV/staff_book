@@ -72,7 +72,7 @@ const ViewStock = () => {
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="flex flex-col justify-between gap-8 md:flex-row md:items-center pt-1">
             <div>
-              <Typography variant="h5" color="deep-purple">
+              <Typography variant="h5" color="indigo">
                 Stock List
               </Typography>
             </div>
@@ -80,13 +80,13 @@ const ViewStock = () => {
               <div className="w-full md:w-72">
                 <Input
                   label="Search"
-                  color="deep-purple"
+                  color="indigo"
                   icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                 />
               </div>
               <Button
                 onClick={() => navigate("/addStock")}
-                className="flex items-center gap-3 bg-deep-purple-400"
+                className="flex items-center gap-3 bg-indigo-400"
                 size="sm"
               >
                 <PlusIcon className="h-4 w-4" /> Add Product
@@ -102,7 +102,7 @@ const ViewStock = () => {
                   {TABLE_HEAD.map((head) => (
                     <th
                       key={head}
-                      className="border-b border-deep-purple-100 bg-deep-purple-400 p-4"
+                      className="border-b border-indigo-100 bg-indigo-400 p-4"
                     >
                       <Typography
                         variant="small"
@@ -120,7 +120,7 @@ const ViewStock = () => {
                   const isLast = index === tableRows.length - 1;
                   const classes = isLast
                     ? "p-3 px-4"
-                    : "p-3 px-4 border-b border-deep-purple-50";
+                    : "p-3 px-4 border-b border-indigo-50";
 
                   return (
                     <tr key={index}>

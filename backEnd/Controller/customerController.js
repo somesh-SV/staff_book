@@ -40,8 +40,11 @@ module.exports.updateCustomer = (req, res) => {
   let requestData = req.body;
   dao.updateCustomer(id, requestData, function (err, result) {
     if (err) {
-      res.status(500).send(err);
-      console.log(err);
+      if (err.message === "Already Updated") {
+        res.status(200).send({ error: false, message: err.message });
+      } else {
+        res.status(500).send(err);
+      }
     } else {
       res
         .status(200)
@@ -56,6 +59,53 @@ module.exports.deleteCustomer = (req, res) => {
     if (err) {
       res.status(500).send(err);
       console.log(err);
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Deleted Successfully" });
+    }
+  });
+};
+
+module.exports.getLinkedProducts = (req, res) => {
+  let id = req.params.id;
+  let requestData = req.body;
+  dao.getLinkedProducts(id, requestData, function (err, result) {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Updated Successfully" });
+    }
+  });
+};
+
+module.exports.updatedLinkedProducts = (req, res) => {
+  let id = req.params.id;
+  let requestData = req.body;
+  dao.updatedLinkedProducts(id, requestData, function (err, result) {
+    if (err) {
+      if (err.message === "Already Updated") {
+        res.status(200).send({ error: false, message: err.message });
+      } else {
+        res.status(500).send(err);
+      }
+    } else {
+      res
+        .status(200)
+        .send({ error: false, data: result, message: "Updated Successfully" });
+    }
+  });
+};
+
+module.exports.deleteLinkedProduct = (req, res) => {
+  let id = req.params.id;
+  let requestData = req.body;
+  dao.deleteLinkedProduct(id, requestData, function (err, result) {
+    if (err) {
+      res.status(500).send(err);
     } else {
       res
         .status(200)

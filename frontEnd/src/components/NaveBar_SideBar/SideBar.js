@@ -11,8 +11,7 @@ function SideBar({ open }) {
   const toggleSubMenu = (index) => {
     setselectedSubMenu((prev) => ({ ...prev, [index]: !prev[index] }));
   };
-  const activeItem =
-    "text-deep-purple-600 bg-deep-purple-50 shadow-lg duration-300";
+  const activeItem = "text-indigo-600 bg-indigo-50 shadow-lg duration-300";
   return (
     <div>
       <div
@@ -24,7 +23,7 @@ function SideBar({ open }) {
           <img className="h-fit w-fit" src={imges.logo} alt="Company Logo" />
         </div>
         <hr className="my-3" />
-        <ul className="text-deep-purple-500 px-3">
+        <ul className="text-indigo-500 px-3">
           {SideNavData.map((item, index) => (
             <li key={index}>
               {item.subMenu ? (

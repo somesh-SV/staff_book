@@ -55,4 +55,9 @@ export const SideNavData = [
       },
     ],
   },
+  {
+    title: "Invoice",
+    path: "/invoice",
+    icon: <materialIcon.ReceiptLong />,
+  },
 ];
